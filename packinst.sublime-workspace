@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"META",
+				"META_URI_API"
+			],
+			[
 				"log",
 				"logListener"
 			],
@@ -510,10 +514,6 @@
 			[
 				"command",
 				"commandLine"
-			],
-			[
-				"comm",
-				"commandLine"
 			]
 		]
 	},
@@ -523,7 +523,8 @@
 			"file": "Packinst/Package/GitPackage.php",
 			"settings":
 			{
-				"buffer_size": 634,
+				"buffer_size": 1469,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		}
@@ -571,6 +572,7 @@
 	],
 	"file_history":
 	[
+		"/K/_backup/dev/web-dev/des.php.local/index.php",
 		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Installer/GitPackageInstaller.php",
 		"/D/_server/apache/sites/des.php.local/packinst/index.php",
 		"/D/_server/apache/sites/des.php.local/plat/app/servlets/IndexPageServlet.php",
@@ -697,8 +699,7 @@
 		"/D/_server/apache/sites/des.php.local/plat/storage/logs/.plat-20220504.log",
 		"/C/Users/ujunio/AppData/Local/Temp/Temp1_plat.20220101.zip/plat/sites/megaloja/resources/views/admin/produtos/novo.vis.php",
 		"/C/Users/ujunio/AppData/Local/Temp/Temp1_plat.20220101.zip/plat/sites/megaloja/app/servlets/AdmProdutosServlet.class.php",
-		"/C/Users/ujunio/AppData/Local/Temp/Temp1_plat.20220101.zip/plat/sites/megaloja/app/services/CriadorDeProduto.class.php",
-		"/C/Users/ujunio/AppData/Local/Temp/Temp1_plat.20220101.zip/plat/sites/megaloja/app/services/SalvadorDeArquivosUpados.class.php"
+		"/C/Users/ujunio/AppData/Local/Temp/Temp1_plat.20220101.zip/plat/sites/megaloja/app/services/CriadorDeProduto.class.php"
 	],
 	"find":
 	{
@@ -745,18 +746,18 @@
 				{
 					"buffer": 0,
 					"file": "Packinst/Package/GitPackage.php",
-					"semi_transient": true,
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 634,
+						"buffer_size": 1469,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1469,
+								1469
 							]
 						],
 						"settings":
@@ -855,7 +856,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 308.0,
+	"side_bar_width": 247.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
