@@ -131,6 +131,38 @@ class GitPackageDownloader
 	}
 
 	/**
+	 *	Generates a loader file with PHP code for the Collei Plat MVC
+	 *	Framework. It requires basic info on the package.
+	 *
+	 *	@param	string|\Packinst\Package\GitPackage	$packageDef
+	 *	@return	self
+	 */
+	public function writeLoaderFileTo(string $destination)
+	{
+		$info = $this->package->repositoryInfo;
+
+		if (!$info)
+		{
+			$this->package->fetchRepositoryInfo();
+			$info = $this->package->repositoryInfo;
+		}
+
+		$parts = explode('/', $info->full_name);
+
+		// write the 'init.php' needed for Collei Plat framework
+		$initCode = "<?php\r\n\r\n"
+			. "/**\r\n *	Register plugin engine and version\r\n */\r\n"
+			. "plat_plugin_register('" . ($parts[0] ?? 'Unnamed') . "',"
+			. "'" . ($parts[1] ?? 'Unnamed') . "',"
+			. "'" . ($info->pushed_at ?? 'None') . "',"
+			. "'" . ($info->description ?? 'None') . "');\r\n\r\n";
+
+		file_put_contents($destination, $initCode);
+
+		return $this;
+	}
+
+	/**
 	 *	Performs the download operation on the defined package to
 	 *	the destination at $to. You can pass one or more $branches
 	 *	to be searched upon the GIT repo, then it will return the first

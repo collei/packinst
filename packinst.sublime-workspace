@@ -527,6 +527,23 @@
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
+		},
+		{
+			"file": "README.md",
+			"settings":
+			{
+				"buffer_size": 1890,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "LICENSE",
+			"settings":
+			{
+				"buffer_size": 1068,
+				"line_ending": "Windows"
+			}
 		}
 	],
 	"build_system": "",
@@ -568,10 +585,13 @@
 		"/D/_server/apache/sites/des.php.local/packinst",
 		"/D/_server/apache/sites/des.php.local/packinst/Packinst",
 		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package",
+		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Downloader",
+		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Installer",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor"
 	],
 	"file_history":
 	[
+		"/D/_server/apache/sites/des.php.local/plat/app/console.php",
 		"/K/_backup/dev/web-dev/des.php.local/index.php",
 		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Installer/GitPackageInstaller.php",
 		"/D/_server/apache/sites/des.php.local/packinst/index.php",
@@ -668,7 +688,6 @@
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Parsers/dsnp.txt",
 		"/D/_server/apache/sites/des.php.local/plat/storage/logs/.20220601.log",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Views/ConstructBase.php",
-		"/D/_server/apache/sites/des.php.local/plat/app/console.php",
 		"/D/_server/apache/sites/des.php.local/plat/sites/contacta/app/services/TagManagerService.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Database/Yanfei/ModelResult.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/App/App.php",
@@ -740,7 +759,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -769,7 +788,63 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "README.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1890,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								261,
+								261
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "LICENSE",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1068,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

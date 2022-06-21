@@ -41,14 +41,16 @@ $git_package = $_REQUEST['git_package'] ?? '';
 
 function install_git_into($group, $project, $destination)
 {
-	@mkdir("./{$destination}/{$group}");
-	@mkdir("./{$destination}/{$group}/{$project}");
+	$to_path = "./{$destination}/{$group}/{$project}";
+	$to_zip = $to_path . '/master.zip';
 
-	$to = "./{$destination}/{$group}/{$project}/master.zip";
+	@mkdir($to_path, 0777, true);
 
-	$res = (new GitPackageDownloader())
-		->setPackage(new GitPackage($group, $project))
-		->downloadTo($to);
+	$gp = new GitPackage($group, $project);
+	$gp->fetchRepositoryInfo();
+
+	$gpd = new GitPackageDownloader();
+	$res = $gpd->setPackage($gp)->downloadTo($to_zip);
 
 	if ($res)
 	{
@@ -61,8 +63,10 @@ function install_git_into($group, $project, $destination)
 
 		$gpi = (new GitPackageInstaller())
 			->setLogListener($listener)
-			->setPackage($to)
+			->setPackage($to_zip)
 			->install();
+
+		$gpd->writeLoaderFileTo($to_path . '/init.php');
 
 		return $gpi;
 	}
@@ -91,6 +95,21 @@ if (!empty($git_package))
 	{
 		echo "- Invalid package: <b>$git_package</b> $nl";
 	}
+}
+elseif (1 == 2)
+{
+	echo '<hr>';
+	$edd = new GitPackage('endroid', 'qr-code');
+	$edd->fetchRepositoryInfo();
+
+	echo '<fieldset>' . print_r($edd->repositoryInfo, true) . '</fieldset>';
+
+	echo '<hr>';
+	$col = new GitPackage('collei', 'plat');
+	$col->fetchRepositoryInfo();
+
+	echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';
+
 }
 
 ?>
