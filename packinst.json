@@ -1,0 +1,12 @@
+{
+	"name": "collei/packinst",
+	"version": "0.1.1",
+	"description": "package manager for the Collei Plat MVC Framework",
+	"autoload": {
+		"rootFolder": "src"
+	},
+	"require": {
+		"php": "^7.4",
+		"collei/plat": "*"
+	} 
+}

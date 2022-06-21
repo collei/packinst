@@ -2,7 +2,7 @@
 
 namespace Packinst\Package\Installer;
 
-use Packinst\Package\Installable;
+use Packinst\Package\Downloader\GitPackageDownloader;
 use ZipArchive;
 use DateTime;
 use Closure;
@@ -16,7 +16,7 @@ use Closure;
  *	and arrange their content based on class namespace structure.
  *
  */
-class GitPackageInstaller implements Installable
+class GitPackageInstaller
 {
 	/**
 	 *	@const string DS
@@ -37,6 +37,16 @@ class GitPackageInstaller implements Installable
 	 *	@var array $logListener
 	 */
 	private $logListener = null;
+
+	/**
+	 *	@var string $detectedClassesFolder
+	 */
+	private $detectedClassesFolder = '';
+
+	/**
+	 *	@var \Packinst\Package\Downloader\GitPackageDownloader $downloader
+	 */
+	private $downloader = '';
 
 	/**
 	 *	Logs to the listener (if any) and returns the same string
@@ -251,28 +261,38 @@ class GitPackageInstaller implements Installable
 	/**
 	 *	Initializes the package installer engine.
 	 *
-	 *	@param	string	$packageZip = null
+	 *	@param	\Packinst\Package\Downloader\GitPackageDownloader	$downloader = null
 	 *	@return	self
 	 */
-	public function __construct(string $packageZip = null)
+	public function __construct(GitPackageDownloader $downloader = null)
 	{
-		if (!empty($packageZip))
+		if (!empty($downloader))
 		{
-			$this->setPackage($packageZip);
+			$this->setPackageDownloader($downloader);
 		}
 	}
 
 	/**
-	 *	Set the package path to be handled.
+	 *	Sets the downloader related to the package.
 	 *
-	 *	@param	string	$packageZip
+	 *	@param	\Packinst\Package\Downloader\GitPackageDownloader	$downloader
 	 *	@return	self
 	 */
-	public function setPackage(string $packageZip)
+	public function setPackageDownloader(GitPackageDownloader $downloader)
 	{
-		$this->package = $packageZip;
+		$this->downloader = $downloader;
 		//
 		return $this;
+	}
+
+	/**
+	 *	Gets the downloader related to the package.
+	 *
+	 *	@return	\Packinst\Package\Downloader\GitPackageDownloader|null
+	 */
+	public function getPackageDownloader()
+	{
+		return $this->downloader;
 	}
 
 	/**
@@ -289,6 +309,17 @@ class GitPackageInstaller implements Installable
 	}
 
 	/**
+	 *	Returns the name of the detected class root folder,
+	 *	such as 'src', 'lib', etc..
+	 *
+	 *	@return	string
+	 */
+	public function getClassesFolder()
+	{
+		return $this->detectedClassesFolder;
+	}
+
+	/**
 	 *	Unpacks and organizes the package 
 	 *
 	 *	@param	string	$sourcePath
@@ -298,21 +329,30 @@ class GitPackageInstaller implements Installable
 	public function install()
 	{
 		// if the zip does not exists or no zip was set
-		if (empty($this->package))
+		if (empty($this->downloader))
 		{
 			$this->log('no package zip set');
 			return false;
 		}
 
-		// if the zip does not exists or no zip was set
-		if (!file_exists($this->package))
+		$zipFile = $this->downloader->getDownloadedLocation();
+
+		// if no zip was downloaded yet
+		if (is_null($zipFile))
 		{
-			$this->log('package not found: ', $this->package);
+			$this->log('package not found: null');
+			return false;
+		}
+
+		// if the zip does not exist
+		if (!file_exists($zipFile))
+		{
+			$this->log('package not found: ', $zipFile);
 			return false;
 		}
 
 		// try to unpack the downloaded package
-		if (($dest = $this->unzipPackage($this->package)) === false)
+		if (($dest = $this->unzipPackage($zipFile)) === false)
 		{
 			$this->log('package may be empty or corrupted: ', $this->package);
 			return false;
@@ -330,11 +370,18 @@ class GitPackageInstaller implements Installable
 				// and if it exists, does the workout
 				if (is_dir($basePath))
 				{
+					$this->detectedClassesFolder = $baseFolder;
+
 					$qtd = $this->organizePhpClasses($basePath);
 
 					$this->log('Detected class files: ', $qtd);
 				}
 			}
+
+			$this->downloader->writeLoaderFileTo(
+				dirname($zipFile) . '/init.php',
+				[ 'classes_folder' => $this->detectedClassesFolder ]
+			);
 
 			$this->log('Class files organized successfully.');
 		}

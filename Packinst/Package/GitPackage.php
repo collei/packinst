@@ -2,6 +2,8 @@
 
 namespace Packinst\Package;
 
+use Packinst\Package\Downloader;
+
 /**
  *	@author	alarido.su@gmail.com
  *	@since	2022-06-19

@@ -42,6 +42,11 @@ class GitPackageDownloader
 	private $package = null;
 
 	/**
+	 *	@property string $downloadedLocation
+	 */
+	private $downloadedLocation = null;
+
+	/**
 	 *	Performs CURL download operation from $uri and, if successful,
 	 *	saves the result to $destination path
 	 *
@@ -104,7 +109,7 @@ class GitPackageDownloader
 	}
 
 	/**
-	 *	Set the package the downloader should work with.
+	 *	Sets the package the downloader should work with.
 	 *	Accepts either a GitPackage instance or a string in the
 	 *	group-name/project-name format.
 	 *
@@ -131,13 +136,33 @@ class GitPackageDownloader
 	}
 
 	/**
+	 *	Gets the package the downloader is associated with.
+	 *
+	 *	@return	\Packinst\Package\GitPackage|null
+	 */
+	public function getPackage()
+	{
+		return $this->package;
+	}
+
+	/**
+	 *	Returns where the downloaded file lies.
+	 *
+	 *	@return	string|null
+	 */
+	public function getDownloadedLocation()
+	{
+		return $this->downloadedLocation;
+	}
+
+	/**
 	 *	Generates a loader file with PHP code for the Collei Plat MVC
 	 *	Framework. It requires basic info on the package.
 	 *
 	 *	@param	string|\Packinst\Package\GitPackage	$packageDef
 	 *	@return	self
 	 */
-	public function writeLoaderFileTo(string $destination)
+	public function writeLoaderFileTo(string $destination, array $extraInfo = [])
 	{
 		$info = $this->package->repositoryInfo;
 
@@ -152,10 +177,14 @@ class GitPackageDownloader
 		// write the 'init.php' needed for Collei Plat framework
 		$initCode = "<?php\r\n\r\n"
 			. "/**\r\n *	Register plugin engine and version\r\n */\r\n"
-			. "plat_plugin_register('" . ($parts[0] ?? 'Unnamed') . "',"
-			. "'" . ($parts[1] ?? 'Unnamed') . "',"
-			. "'" . ($info->pushed_at ?? 'None') . "',"
-			. "'" . ($info->description ?? 'None') . "');\r\n\r\n";
+			. "plat_plugin_register(["
+			. "\r\n\t'plugin' => '" . ($info->full_name) . "',"
+			. "\r\n\t'description' => '" . ($info->description ?? 'none') . "',"
+			. "\r\n\t'version' => '" . ($info->pushed_at ?? 'none') . "',"
+			. "\r\n\t'dependencies' => ["
+			. "\r\n\t],"
+			. "\r\n\t'classes_folder' => '" . ($extraInfo['classes_folder'] ?? 'none') . "',"
+			. "\r\n]);\r\n\r\n";
 
 		file_put_contents($destination, $initCode);
 
@@ -196,6 +225,8 @@ class GitPackageDownloader
 			//
 			if ($this->fetchCurlDownload($uri, $to))
 			{
+				$this->downloadedLocation = $to;
+				//
 				return true;
 			}
 		}

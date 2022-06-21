@@ -1,12 +1,10 @@
 <?php
 
 include 'Packinst\Package\GitPackage.php';
-include 'Packinst\Package\Installable.php';
 include 'Packinst\Package\Downloader\GitPackageDownloader.php';
 include 'Packinst\Package\Installer\GitPackageInstaller.php';
 
 use Packinst\Package\GitPackage;
-use Packinst\Package\Installable;
 use Packinst\Package\Downloader\GitPackageDownloader;
 use Packinst\Package\Installer\GitPackageInstaller;
 
@@ -50,9 +48,9 @@ function install_git_into($group, $project, $destination)
 	$gp->fetchRepositoryInfo();
 
 	$gpd = new GitPackageDownloader();
-	$res = $gpd->setPackage($gp)->downloadTo($to_zip);
+	$gpd->setPackage($gp);
 
-	if ($res)
+	if ($gpd->downloadTo($to_zip))
 	{
 		$listener = function($event)
 		{
@@ -63,10 +61,10 @@ function install_git_into($group, $project, $destination)
 
 		$gpi = (new GitPackageInstaller())
 			->setLogListener($listener)
-			->setPackage($to_zip)
+			->setPackageDownloader($gpd)
 			->install();
 
-		$gpd->writeLoaderFileTo($to_path . '/init.php');
+		//$gpd->writeLoaderFileTo($to_path . '/init.php');
 
 		return $gpi;
 	}
