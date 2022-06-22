@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"downloa",
+				"downloadedPath"
+			],
+			[
+				"arch",
+				"archivePath"
+			],
+			[
 				"repos",
 				"repositoryInfo"
 			],
@@ -506,14 +514,6 @@
 			[
 				"servl",
 				"servlet_class"
-			],
-			[
-				"route",
-				"routeMethod"
-			],
-			[
-				"Comma",
-				"CommandLine"
 			]
 		]
 	},
@@ -523,16 +523,8 @@
 			"file": "Packinst/Package/GitPackage.php",
 			"settings":
 			{
-				"buffer_size": 2989,
+				"buffer_size": 3023,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "vendor/index.php",
-			"settings":
-			{
-				"buffer_size": 29,
 				"line_ending": "Windows"
 			}
 		},
@@ -540,7 +532,16 @@
 			"file": "index.php",
 			"settings":
 			{
-				"buffer_size": 2389,
+				"buffer_size": 2313,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "Packinst/Package/Installer/GitPackageInstaller.php",
+			"settings":
+			{
+				"buffer_size": 8465,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -549,16 +550,8 @@
 			"file": "Packinst/Package/Downloader/GitPackageDownloader.php",
 			"settings":
 			{
-				"buffer_size": 4783,
+				"buffer_size": 5327,
 				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "vendor/Bacon/BaconQrCode/init.php",
-			"settings":
-			{
-				"buffer_size": 254,
 				"line_ending": "Windows"
 			}
 		}
@@ -608,6 +601,9 @@
 	],
 	"file_history":
 	[
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/khanamiryan/php-qrcode-detector-decoder/tests/bootstrap.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/khanamiryan/php-qrcode-detector-decoder/init.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode/init.php",
 		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Installer/GitPackageInstaller.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/init.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/packinst.json",
@@ -639,7 +635,6 @@
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/src/BaconQrCode/Encoder/QrCode.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/src/BaconQrCode/Common/BitArray.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/src/BaconQrCode/Writer.php",
-		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode/init.php",
 		"/D/_server/apache/sites/des.php.local/plat/app/console.php",
 		"/K/_backup/dev/web-dev/des.php.local/index.php",
 		"/D/_server/apache/sites/des.php.local/packinst/index.php",
@@ -733,13 +728,11 @@
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Collections/Collection.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Parsers/DsnParser.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Parsers/dsnp.txt",
-		"/D/_server/apache/sites/des.php.local/plat/storage/logs/.20220601.log",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Views/ConstructBase.php",
-		"/D/_server/apache/sites/des.php.local/plat/sites/contacta/app/services/TagManagerService.php"
+		"/D/_server/apache/sites/des.php.local/plat/storage/logs/.20220601.log"
 	],
 	"find":
 	{
-		"height": 34.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
@@ -753,6 +746,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"detectedBaseFolder",
+			"BASE_SOURCES"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -760,6 +755,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"detectedClassesFolder"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -776,7 +772,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -785,15 +781,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2989,
+						"buffer_size": 3023,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1539,
-								1558
+								68,
+								68
 							]
 						],
 						"settings":
@@ -802,55 +798,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 351.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "vendor/index.php",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 29,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5,
-								5
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "index.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2389,
+						"buffer_size": 2313,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1487,
-								1487
+								1362,
+								1362
 							]
 						],
 						"settings":
@@ -862,24 +830,24 @@
 						"translation.y": 684.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "Packinst/Package/Downloader/GitPackageDownloader.php",
+					"buffer": 2,
+					"file": "Packinst/Package/Installer/GitPackageInstaller.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4783,
+						"buffer_size": 8465,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3739,
-								3739
+								8465,
+								8465
 							]
 						],
 						"settings":
@@ -888,38 +856,39 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2666.0,
+						"translation.y": 6766.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "vendor/Bacon/BaconQrCode/init.php",
+					"buffer": 3,
+					"file": "Packinst/Package/Downloader/GitPackageDownloader.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 254,
+						"buffer_size": 5327,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								250,
-								250
+								4181,
+								4181
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2997.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -968,7 +937,7 @@
 	"project": "",
 	"replace":
 	{
-		"height": 64.0
+		"height": 72.0
 	},
 	"save_all_on_build": true,
 	"select_file":

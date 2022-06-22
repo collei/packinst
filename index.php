@@ -1,10 +1,12 @@
 <?php
 
 include 'Packinst\Package\GitPackage.php';
+include 'Packinst\Package\GithubPackage.php';
 include 'Packinst\Package\Downloader\GitPackageDownloader.php';
 include 'Packinst\Package\Installer\GitPackageInstaller.php';
 
 use Packinst\Package\GitPackage;
+use Packinst\Package\GithubPackage;
 use Packinst\Package\Downloader\GitPackageDownloader;
 use Packinst\Package\Installer\GitPackageInstaller;
 
@@ -37,14 +39,16 @@ $nl = "\r\n";
 $git_package = $_REQUEST['git_package'] ?? '';
 
 
-function install_git_into($group, $project, $destination)
+function install_git_into($packageName, $destination)
 {
+	list($group, $project) = explode('/', $packageName);
+
 	$to_path = "./{$destination}/{$group}/{$project}";
 	$to_zip = $to_path . '/master.zip';
 
 	@mkdir($to_path, 0777, true);
 
-	$gp = new GitPackage($group, $project);
+	$gp = new GithubPackage($group, $project);
 	$gp->fetchRepositoryInfo();
 
 	$gpd = new GitPackageDownloader();
@@ -74,13 +78,11 @@ function install_git_into($group, $project, $destination)
 
 if (!empty($git_package))
 {
-	$matches = [];
-
-	if (preg_match('/([\w_\-.]+)[\\/\\\\]([\w_\-.]+)/', $git_package, $matches))
+	if (preg_match('/([\w_\-.]+)[\\/]([\w_\-.]+)/', $git_package))
 	{
-		echo '<fieldset>' . print_r($matches, true) . '</fieldset>' . $nl;
+		echo '<fieldset>' . print_r($git_package, true) . '</fieldset>' . $nl;
 
-		if (install_git_into($matches[1], $matches[2], 'vendor'))
+		if (install_git_into($git_package, 'vendor'))
 		{
 			echo "- Package $git_package installed successfully. $nl";
 		}
@@ -94,16 +96,16 @@ if (!empty($git_package))
 		echo "- Invalid package: <b>$git_package</b> $nl";
 	}
 }
-elseif (1 == 2)
+elseif (1 == 1)
 {
 	echo '<hr>';
-	$edd = new GitPackage('endroid', 'qr-code');
+	$edd = new GithubPackage('endroid/qr-code');
 	$edd->fetchRepositoryInfo();
 
 	echo '<fieldset>' . print_r($edd->repositoryInfo, true) . '</fieldset>';
 
 	echo '<hr>';
-	$col = new GitPackage('collei', 'plat');
+	$col = new GithubPackage('collei/plat');
 	$col->fetchRepositoryInfo();
 
 	echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';

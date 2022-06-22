@@ -354,7 +354,7 @@ class GitPackageInstaller
 		// try to unpack the downloaded package
 		if (($dest = $this->unzipPackage($zipFile)) === false)
 		{
-			$this->log('package may be empty or corrupted: ', $this->package);
+			$this->log('package may be empty or corrupted: ', $zipFile);
 			return false;
 		}
 

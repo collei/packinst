@@ -221,7 +221,7 @@ class GitPackageDownloader
 		//
 		foreach ($branches as $branch)
 		{
-			$uri = $this->package->getApiUri($branch);
+			$uri = $this->package->getApiDownloadUri($branch);
 			//
 			if ($this->fetchCurlDownload($uri, $to))
 			{
