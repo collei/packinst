@@ -1,14 +1,18 @@
 <?php
 
-include 'Packinst\Package\GitPackage.php';
-include 'Packinst\Package\GithubPackage.php';
-include 'Packinst\Package\Downloader\GitPackageDownloader.php';
-include 'Packinst\Package\Installer\GitPackageInstaller.php';
+include 'src\Packinst\Utils\ArrayTokenScanner.php';
+include 'src\Packinst\Package\GitPackage.php';
+include 'src\Packinst\Package\GithubPackage.php';
+include 'src\Packinst\Package\PackageManager.php';
+include 'src\Packinst\Package\Downloader\GitPackageDownloader.php';
+include 'src\Packinst\Package\Installer\GitPackageInstaller.php';
 
-use Packinst\Package\GitPackage;
+//use Packinst\Package\GitPackage;
 use Packinst\Package\GithubPackage;
-use Packinst\Package\Downloader\GitPackageDownloader;
-use Packinst\Package\Installer\GitPackageInstaller;
+//use Packinst\Utils\ArrayTokenScanner;
+use Packinst\Package\PackageManager;
+//use Packinst\Package\Downloader\GitPackageDownloader;
+//use Packinst\Package\Installer\GitPackageInstaller;
 
 
 ?>
@@ -38,19 +42,24 @@ $nl = "\r\n";
 
 $git_package = $_REQUEST['git_package'] ?? '';
 
+PackageManager::setLocation(realpath('vendor'));
 
 function install_git_into($packageName, $destination)
 {
 	list($group, $project) = explode('/', $packageName);
 
+/*
 	$to_path = "./{$destination}/{$group}/{$project}";
 	$to_zip = $to_path . '/master.zip';
 
 	@mkdir($to_path, 0777, true);
-
+*/
 	$gp = new GithubPackage($group, $project);
 	$gp->fetchRepositoryInfo();
 
+	return PackageManager::install($gp);
+
+/*
 	$gpd = new GitPackageDownloader();
 	$gpd->setPackage($gp);
 
@@ -74,6 +83,7 @@ function install_git_into($packageName, $destination)
 	}
 
 	return false;
+*/
 }
 
 if (!empty($git_package))
@@ -96,20 +106,39 @@ if (!empty($git_package))
 		echo "- Invalid package: <b>$git_package</b> $nl";
 	}
 }
-elseif (1 == 1)
+else
 {
-	echo '<hr>';
-	$edd = new GithubPackage('endroid/qr-code');
-	$edd->fetchRepositoryInfo();
 
-	echo '<fieldset>' . print_r($edd->repositoryInfo, true) . '</fieldset>';
+	$infos = PackageManager::getInstalledPackages(true);
 
-	echo '<hr>';
-	$col = new GithubPackage('collei/plat');
-	$col->fetchRepositoryInfo();
+	?>
+	<fieldset>
+		<legend>Installed packages</legend>
+	<?php
+	foreach ($infos as $n => $v)
+	{
+		?>
+		<fieldset><legend><?=($n)?></legend><?=(print_r($v,true))?></fieldset>
+		<?php
+	}
+	?>
+	</fieldset>
+	<?php
 
-	echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';
+	if (1 == 2)
+	{
+		echo '<hr>';
+		$edd = new GithubPackage('endroid/qr-code');
+		$edd->fetchRepositoryInfo();
 
+		echo '<fieldset>' . print_r($edd->repositoryInfo, true) . '</fieldset>';
+
+		echo '<hr>';
+		$col = new GithubPackage('collei/plat');
+		$col->fetchRepositoryInfo();
+
+		echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';
+	}
 }
 
 ?>

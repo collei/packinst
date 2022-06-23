@@ -22,23 +22,43 @@ namespace Packinst\Utils;
  */
 class ArrayTokenScanner
 {
-	/** @var array  */
+	/**
+	 *  @const array ACCEPT
+	 */
+	protected const TA_GENERAL = [
+		T_ARRAY, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_ARROW,
+		T_STRING, T_NUM_STRING, T_LNUMBER, T_DNUMBER
+	];
+
+	protected const TA_ATOMIC_STRING = [
+		T_STRING, T_NUM_STRING, T_CONSTANT_ENCAPSED_STRING
+	];
+
+	/**
+	 *  @var array $arrayKeys
+	 */
 	protected $arrayKeys = [];
 
 	/**
-	 * @param string $string   e.g. array('foo' => 123, 'bar' => [0 => 123, 1 => 12345])
+	 *  Performs string scan and further parsing.
+	 *  Now accepts multiline strings by making them monoline.
 	 *
-	 * @return array
+	 *  e.g. array('foo' => 123, 'bar' => [0 => 123, 1 => 12345])
+	 *
+	 *  @param  string  $string
+	 *  @return array
 	 */
 	public function scan($string)
 	{
 		// Transform multiline strings in monoline ones
-		$string = implode('', explode("\r\n", $string));
+		$string = $this->quotedStringPreserve('' . $string . '');
 
 		// Remove whitespace and semi colons
 		$sanitized = trim($string, " \t\n\r\0\x0B;");
-		if(preg_match('/^(\[|array\().*(\]|\))$/', $sanitized)) {
-			if($tokens = $this->tokenize("<?php {$sanitized}")) {
+		if (preg_match('/^(\[|array\().*(\]|\))$/', $sanitized))
+		{
+			if ($tokens = $this->tokenize("<?php {$sanitized}"))
+			{
 				$this->initialize($tokens);
 				return $this->parse($tokens);
 			}
@@ -49,34 +69,104 @@ class ArrayTokenScanner
 	}
 
 	/**
-	 * @param array $tokens
+	 *	Removes newlines from outside strings while preserving
+	 *	(encoded) those inside.
+	 *
+	 *	@param	string	$string
+	 *	@return	string
+	 */
+	protected function quotedStringPreserve(string $string)
+	{
+		$chars = preg_split('//u', $string, null, PREG_SPLIT_NO_EMPTY);
+		$chunks = [];
+		$lastQuote = '';
+		//
+		$delimiters = [ '"', "'" ];
+		$targets = [ "\r", "\n" ];
+		$alts = [ "\r" => '\r', "\n" => '\n' ];
+		//
+		foreach ($chars as $char)
+		{
+			if (in_array($char, $targets))
+			{
+				if (!empty($lastQuote))
+				{
+					$chunks[] = $alts[$char];
+				}
+			}
+			else
+			{
+				$chunks[] = $char;
+			}
+			//
+			if ($lastQuote == $char)
+			{
+				$lastQuote = '';
+			}
+			elseif (empty($lastQuote) && in_array($char, $delimiters))
+			{
+				$lastQuote = $char;
+			}
+		}
+		//
+		return implode('', $chunks);
+	}
+
+	/**
+	 *  Token chain initializer
+	 *
+	 *  @param  array   $tokens
+	 *  @return void
 	 */
 	protected function initialize(array $tokens)
 	{
 		$this->arrayKeys = [];
-		while($current = current($tokens)) {
+		//
+		while($current = current($tokens))
+		{
 			$next = next($tokens);
-			if(($next[0] ?? '') === T_DOUBLE_ARROW) {
+			//
+			if (($next[0] ?? '') === T_DOUBLE_ARROW)
+			{
 				$this->arrayKeys[] = $current[1];
 			}
 		}
 	}
 
 	/**
-	 * @param array $tokens
-	 * @return array
+	 *  Shorthand for getting the appropriate key
+	 *
+	 *  @param  mixed   $assoc
+	 *  @param  mixed   &$index
+	 *  @return mixed
+	 */
+	protected function genKey($assoc, &$index)
+	{
+		return ($assoc !== false)
+			? trim($assoc, "'\"")
+			: $this->createKey($index);
+	}
+
+	/**
+	 *  Parser method
+	 *
+	 *  @param  array   &$tokens
+	 *  @return array
 	 */
 	protected function parse(array &$tokens)
 	{
 		$array = [];
 		$token = current($tokens);
-		if(in_array($token[0], [T_ARRAY, T_BRACKET_OPEN]))
+		if (in_array($token[0], [T_ARRAY, T_BRACKET_OPEN]))
 		{
-			// Is array!
+			// It's array!
 			$assoc = false;
 			$index = 0;
-			$discriminator = ($token[0] === T_ARRAY) ? T_ARRAY_CLOSE : T_BRACKET_CLOSE;
-			while($token = $this->until($tokens, $discriminator)) 
+			$discriminator = ($token[0] === T_ARRAY)
+				? T_ARRAY_CLOSE
+				: T_BRACKET_CLOSE;
+			//
+			while ($token = $this->until($tokens, $discriminator)) 
 			{
 				// Skip arrow ( => )
 				if(in_array($token[0], [T_DOUBLE_ARROW])) {
@@ -106,14 +196,14 @@ class ArrayTokenScanner
 				// Parse array contents recursively
 				if (in_array($token[0], [T_ARRAY, T_BRACKET_OPEN]))
 				{
-					$array[($assoc !== false) ? $assoc : $this->createKey($index)] = $this->parse($tokens);
+					$array[$this->genKey($assoc, $index)] = $this->parse($tokens);
 					continue;
 				}
 
 				// Parse atomic string
-				if (in_array($token[0], [T_STRING, T_NUM_STRING, T_CONSTANT_ENCAPSED_STRING]))
+				if (in_array($token[0], self::TA_ATOMIC_STRING))
 				{
-					$array[($assoc !== false) ? $assoc : $this->createKey($index)] = $this->parseAtomic($token[1]);
+					$array[$this->genKey($assoc, $index)] = $this->parseAtomic($token[1]);
 				}
 
 				// Parse atomic number
@@ -127,10 +217,11 @@ class ArrayTokenScanner
 					}
 					next($tokens);
 
-					$array[($assoc !== false) ? $assoc : $this->createKey($index)] = $this->parseAtomic($value);
+					$array[$this->genKey($assoc, $index)] = $this->parseAtomic($value);
 				}
 
-				// Increment index unless a associative key is used. In this case we want too reuse the current value.
+				// Increment index unless a associative key is used.
+				// In this case we want too reuse the current value.
 				if (!is_string($assoc))
 				{
 					$index++;
@@ -142,13 +233,16 @@ class ArrayTokenScanner
 	}
 
 	/**
-	 * @param array $tokens
-	 * @param int|string $discriminator
-	 * @return array|false
+	 *  used by parse() method
+	 *
+	 *  @param  array   $tokens
+	 *  @param  int|string  $discriminator
+	 *  @return array|false
 	 */
 	protected function until(array &$tokens, $discriminator)
 	{
 		$next = next($tokens);
+		//
 		if ($next === false or $next[0] === $discriminator)
 		{
 			return false;
@@ -157,6 +251,13 @@ class ArrayTokenScanner
 		return $next;
 	}
 
+	/**
+	 *  used by genKey() method and, thence, indirectly,
+	 *  by the parse() method
+	 *
+	 *  @param  mixed   &$index
+	 *  @return mixed
+	 */
 	protected function createKey(&$index)
 	{
 		do {
@@ -168,17 +269,21 @@ class ArrayTokenScanner
 	}
 
 	/**
-	 * @param $string
-	 * @return array|false
+	 *  Tokenizer method
+	 *
+	 *  @param $string
+	 *  @return array|false
 	 */
 	protected function tokenize($string)
 	{
 		$tokens = token_get_all($string);
+		//
 		if (is_array($tokens))
 		{
 			// Filter tokens
 			$tokens = array_values(array_filter($tokens, [$this, 'accept']));
-			// Normalize token format, make syntax characters look like tokens for consistent parsing
+			// Normalize token format, make syntax characters
+			// look like tokens for consistent parsing
 			return $this->normalize($tokens);
 		}
 		//
@@ -186,10 +291,11 @@ class ArrayTokenScanner
 	}
 
 	/**
-	 * Method used to accept or deny tokens so that we only have to deal with the allowed tokens
+	 *  Method used to accept or deny tokens
+	 *  so that we only have to deal with the allowed tokens
 	 *
-	 * @param array|string $value	A token or syntax character
-	 * @return bool
+	 *  @param array|string $value  A token or syntax character
+	 *  @return bool
 	 */
 	protected function accept($value)
 	{
@@ -199,9 +305,10 @@ class ArrayTokenScanner
 			return in_array($value, [',', '[', ']', ')', '-']);
 		}
 		//
-		if (!in_array($value[0], [T_ARRAY, T_CONSTANT_ENCAPSED_STRING, T_DOUBLE_ARROW, T_STRING, T_NUM_STRING, T_LNUMBER, T_DNUMBER])) 
-        {
-			// Token did not match requirement. The token is not listed in the collection above.
+		if (!in_array($value[0], self::TA_GENERAL)) 
+		{
+			// Token did not match requirement.
+			// The token is not listed in the collection above.
 			return false;
 		}
 		// Token is accepted.
@@ -209,17 +316,19 @@ class ArrayTokenScanner
 	}
  
 	/**
-	 * Normalize tokens so that each allowed syntax character looks like a token for consistent parsing.
+	 *  Normalize tokens so that each allowed syntax character
+	 *  looks like a token for consistent parsing.
 	 *
-	 * @param array $tokens
-	 * @return array
+	 *  @param array $tokens
+	 *  @return array
 	 */
 	protected function normalize(array $tokens)
 	{
-		// Define some constants for consistency. These characters are not "real" tokens.
-		defined('T_MINUS')				?: define('T_MINUS','-');
-		defined('T_BRACKET_OPEN')		?: define('T_BRACKET_OPEN','[');
-		defined('T_BRACKET_CLOSE')		?: define('T_BRACKET_CLOSE',']');
+		// Define some constants for consistency.
+		// These characters are not "real" tokens.
+		defined('T_MINUS')			  ?: define('T_MINUS','-');
+		defined('T_BRACKET_OPEN')	   ?: define('T_BRACKET_OPEN','[');
+		defined('T_BRACKET_CLOSE')	  ?: define('T_BRACKET_CLOSE',']');
 		defined('T_COMMA_SEPARATOR')	?: define('T_COMMA_SEPARATOR',',');
 		defined('T_ARRAY_CLOSE')		?: define('T_ARRAY_CLOSE',')');
 
@@ -235,16 +344,19 @@ class ArrayTokenScanner
 	}
 
 	/**
-	 * @param $value
-	 * @return mixed
+	 *  Atomic value parser
+	 *
+	 *  @param  mixed   $value
+	 *  @return mixed
 	 */
 	protected function parseAtomic($value)
 	{
-		// If the parameter type is a string than it will be enclosed with quotes
+		// If the parameter type is a string
+		// then it will be enclosed with quotes
 		if (preg_match('/^["\'].*["\']$/', $value))
 		{
 			// is (already) a string
-			return $value;
+			return str_replace(['\\','\r','\n'], ["\\","\r","\n"], trim($value, "'\""));
 		}
 
 		// Parse integer
@@ -253,7 +365,8 @@ class ArrayTokenScanner
 			return (int) $value;
 		}
 
-		// Parse other sorts of numeric values (floats, scientific notation etc)
+		// Parse other sorts of numeric values
+		// (floats, scientific notation etc)
 		if (is_numeric($value))
 		{
 			return (float) $value;
@@ -275,5 +388,7 @@ class ArrayTokenScanner
 		// For example, bitsets are not supported. 0x2,1x2 etc
 		return $value;
 	}
+
 }
+
 
