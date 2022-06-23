@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"pack",
+				"packageName"
+			],
+			[
 				"downloa",
 				"downloadedPath"
 			],
@@ -42,10 +46,6 @@
 			[
 				"is_s",
 				"is_string"
-			],
-			[
-				"pack",
-				"package"
 			],
 			[
 				"package",
@@ -520,37 +520,28 @@
 	"buffers":
 	[
 		{
-			"file": "Packinst/Package/GitPackage.php",
+			"file": "Packinst/Package/GithubPackage.php",
 			"settings":
 			{
-				"buffer_size": 3023,
+				"buffer_size": 3983,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/I/xmrig-6.16.4/config.json",
+			"settings":
+			{
+				"buffer_size": 5781,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
 			}
 		},
 		{
 			"file": "index.php",
 			"settings":
 			{
-				"buffer_size": 2313,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Packinst/Package/Installer/GitPackageInstaller.php",
-			"settings":
-			{
-				"buffer_size": 8465,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "Packinst/Package/Downloader/GitPackageDownloader.php",
-			"settings":
-			{
-				"buffer_size": 5327,
+				"buffer_size": 2410,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -601,10 +592,15 @@
 	],
 	"file_history":
 	[
+		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/GitPackage.php",
+		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Installer/GitPackageInstaller.php",
+		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Downloader/GitPackageDownloader.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode/src/BaconQrCode/Exception/OutOfBoundsException.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode/init.php",
+		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/GithubPackageType.php",
+		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/AbstractGitPackage.php",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/khanamiryan/php-qrcode-detector-decoder/tests/bootstrap.php",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/khanamiryan/php-qrcode-detector-decoder/init.php",
-		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode/init.php",
-		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Installer/GitPackageInstaller.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/init.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/packinst.json",
 		"/D/_server/apache/sites/des.php.local/packinst/README.md",
@@ -640,8 +636,6 @@
 		"/D/_server/apache/sites/des.php.local/packinst/index.php",
 		"/D/_server/apache/sites/des.php.local/plat/app/servlets/IndexPageServlet.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/src/Collei/Http/Session.php",
-		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/GitPackage.php",
-		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Downloader/GitPackageDownloader.php",
 		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/Installable.php",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/endroid/qr-code/src/Endroid/QrCode/Builder/Builder.php",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/endroid/qr-code/src/Endroid/QrCode/QrCode.php",
@@ -725,18 +719,15 @@
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Parsers/RawRequestBodyParser.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Values/Capsule.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Collections/Properties.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Collections/Collection.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Parsers/DsnParser.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Parsers/dsnp.txt",
-		"/D/_server/apache/sites/des.php.local/plat/storage/logs/.20220601.log"
+		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Utils/Collections/Collection.php"
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 43.0
 	},
 	"find_in_files":
 	{
-		"height": 115.0,
+		"height": 121.0,
 		"where_history":
 		[
 		]
@@ -746,6 +737,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"getApiUri",
+			"group",
 			"detectedBaseFolder",
 			"BASE_SOURCES"
 		],
@@ -755,6 +748,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"getApiInfoUri",
+			"vendor",
 			"detectedClassesFolder"
 		],
 		"reverse": false,
@@ -777,19 +772,76 @@
 			[
 				{
 					"buffer": 0,
-					"file": "Packinst/Package/GitPackage.php",
+					"file": "Packinst/Package/GithubPackage.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3023,
+						"buffer_size": 3983,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								68,
-								68
+								1526,
+								1526
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 399.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/I/xmrig-6.16.4/config.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5781,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4517,
+								4517
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "index.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2410,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								82,
+								82
 							]
 						],
 						"settings":
@@ -801,93 +853,6 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "index.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2313,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1362,
-								1362
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 684.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "Packinst/Package/Installer/GitPackageInstaller.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8465,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								8465,
-								8465
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 6766.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "Packinst/Package/Downloader/GitPackageDownloader.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5327,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4181,
-								4181
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2997.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 2,
 					"type": "text"
 				}
@@ -896,7 +861,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 34.0
+		"height": 43.0
 	},
 	"input":
 	{
