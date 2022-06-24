@@ -69,6 +69,11 @@ final class PackageManager
 	private static $packageList = [];
 
 	/**
+	 *	@var array $initialized;
+	 */
+	private static $initialized = false;
+
+	/**
 	 *	Performs the scan of a php array code string and converts it 
 	 *	in a live PHP array.
 	 *
@@ -189,13 +194,16 @@ final class PackageManager
 	 *	with their info, with indexes named after their names.
 	 *
 	 *	@param	bool	$loadInfo = false
-	 *	@return	array
+	 *	@return	array|false
 	 */
 	public static function getInstalledPackages(bool $loadInfo = false)
 	{
 		if (empty(self::$packageList))
 		{
-			self::scanLocationForPackages();
+			if (!self::scanLocationForPackages())
+			{
+				return false;
+			}
 		}
 		//
 		$data = [];
@@ -312,13 +320,40 @@ final class PackageManager
 	}
 
 	/**
+	 *	Checks one or more hashes for the given file
+	 *
+	 *	@param	string	$path
+	 *	@param	array	$hashData
+	 *	@param	bool	$and = true
+	 *	@return	bool
+	 */
+	public static function checkFileHashes(
+		string $path, array $hashData, bool $and = true
+	)
+	{
+		$algos = hash_algos();
+		$result = $and;
+		$count = 0;
+		//
+		foreach ($hashData as $algo => $hash) if (in_array($algo, $algos))
+		{
+			$res = (hash_file($algo, $path) === $hash);
+			//
+			$result = ($and) ? ($result && $res) : ($result || $res);
+			++$count;
+		}
+		//
+		return ($count > 0) ? $result : false;
+	}
+
+	/**
 	 *	Verify the update state of the given plugin and returns one of
 	 *	the following values:
-	 *		PS_UPDATED (1) - plugin is up-to-date
-	 *		PS_OUTDATED (2) - plugin is "old" (not up-to-date)
-	 *		PS_NOT_INSTALLED (3) - plugin not found
-	 *		PS_UNDEFINED (99) - package list was not initialized
-	 *		PS_UNREACHABLE_REPO (98) - the remote repo could not be reached
+	 *		PS_UPDATED			(1) - plugin is up-to-date
+	 *		PS_OUTDATED			(2) - plugin is "old" (not up-to-date)
+	 *		PS_NOT_INSTALLED	(3) - plugin not found
+	 *		PS_UNDEFINED		(99) - package list was not initialized
+	 *		PS_UNREACHABLE_REPO	(98) - the remote repo could not be reached
 	 *	Returns false otherwise.
 	 *
 	 *	@param	string	$pluginName
@@ -328,7 +363,12 @@ final class PackageManager
 	{
 		if (empty(self::$packageList))
 		{
-			return self::PS_UNDEFINED;
+			if (empty(self::$location))
+			{
+				return self::PS_UNDEFINED;
+			}
+			//
+			return self::PS_NOT_INSTALLED;
 		}
 		//
 		if (!array_key_exists($pluginName, self::$packageList))
@@ -354,16 +394,12 @@ final class PackageManager
 		//
 		if ($downloader->downloadTo($zipFile))
 		{
-			// hash from new file
-			$sha1_new = sha1_file($zipFile);
-			$md5_new = md5_file($zipFile);
-			// hash from older one
-			$sha1_old = $pluginInfo['archive_info']['hash_sha1'];
-			$md5_old = $pluginInfo['archive_info']['hash_md5'];
+			$check = self::checkFileHashes($zipFile, [
+				'sha1' => $pluginInfo['archive_info']['hash_sha1'],
+				'md5' => $pluginInfo['archive_info']['hash_md5']
+			]);
 			//
-			$result = (($sha1_new == $sha1_old) && ($md5_new == $md5_old))
-				? self::PS_UPDATED
-				: self::PS_OUTDATED;
+			$result = $check ? self::PS_UPDATED : self::PS_OUTDATED;
 			//
 			unlink($zipFile);
 			//

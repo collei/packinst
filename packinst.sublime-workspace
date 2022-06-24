@@ -4,6 +4,54 @@
 		"selected_items":
 		[
 			[
+				"Package",
+				"PackageManager"
+			],
+			[
+				"Packa",
+				"Package"
+			],
+			[
+				"vendor",
+				"vendorPath"
+			],
+			[
+				"zip",
+				"zipFile"
+			],
+			[
+				"upd",
+				"UPD_STATE_OLD"
+			],
+			[
+				"md5",
+				"md5_here"
+			],
+			[
+				"sha1",
+				"sha1_here"
+			],
+			[
+				"down",
+				"downloadTo"
+			],
+			[
+				"depende",
+				"dependencyInfo"
+			],
+			[
+				"archi",
+				"archiveInfo"
+			],
+			[
+				"sha",
+				"sha1_file"
+			],
+			[
+				"file",
+				"filemtime"
+			],
+			[
 				"remo",
 				"removeVendorIfEmpty"
 			],
@@ -58,10 +106,6 @@
 			[
 				"string",
 				"stringWithPhpArrayCode"
-			],
-			[
-				"vendor",
-				"vendorLocation"
 			],
 			[
 				"loca",
@@ -470,50 +514,6 @@
 			[
 				"pre",
 				"previousPosition"
-			],
-			[
-				"Diction",
-				"DictionaryKeeperService"
-			],
-			[
-				"pri",
-				"primaryKey"
-			],
-			[
-				"result",
-				"resultSet"
-			],
-			[
-				"conta",
-				"contact_id"
-			],
-			[
-				"btn-",
-				"btn-secondary"
-			],
-			[
-				"sqlsrv",
-				"sqlsrv_query"
-			],
-			[
-				"Collei",
-				"ColleiViewException"
-			],
-			[
-				"process",
-				"processView"
-			],
-			[
-				"val_",
-				"val_db"
-			],
-			[
-				"pass",
-				"password"
-			],
-			[
-				"Conne",
-				"Connection"
 			]
 		]
 	},
@@ -523,7 +523,7 @@
 			"file": "index.php",
 			"settings":
 			{
-				"buffer_size": 4288,
+				"buffer_size": 4828,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -532,8 +532,16 @@
 			"file": "src/Packinst/Package/PackageManager.php",
 			"settings":
 			{
-				"buffer_size": 6508,
+				"buffer_size": 8844,
 				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/Packinst/Package/GitPackage.php",
+			"settings":
+			{
+				"buffer_size": 1025,
 				"line_ending": "Windows"
 			}
 		}
@@ -582,6 +590,16 @@
 	],
 	"file_history":
 	[
+		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/Downloader/GitPackageDownloader.php",
+		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/PackageManager.php",
+		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/GithubPackage.php",
+		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/Installer/GitPackageInstaller.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconStringUtils/src/BaconStringUtils/UniDecoder.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconStringUtils/src/BaconStringUtils/UniDecoder/x1d6.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconStringUtils/src/BaconStringUtils/UniDecoder/x00e.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconStringUtils/src/BaconStringUtils/UniDecoder/x000.php",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconStringUtils/init.php",
+		"/D/_server/apache/sites/des.php.local/packinst-vendor/__hasha/Bacon/BaconPdf/init.php",
 		"/D/_server/apache/sites/des.php.local/packinst-vendor/endroid/calendar/init.php",
 		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Utils/ArrayTokenScanner.php",
 		"/D/_server/apache/sites/des.php.local/packinst/Packinst/Package/PackageManager.php",
@@ -699,17 +717,7 @@
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/endroid/qr-code/src/Endroid/QrCode/Builder/Builder.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/endroid/qr-code/src/Endroid/QrCode/Writer/PngWriter.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/endroid/qr-code/init.php",
-		"/C/Users/ujunio/Downloads/php-qrcode-detector-decoder-master/lib/Binarizer.php",
-		"/C/Users/ujunio/Downloads/BaconQrCode-master/test/BaconQrCode/Common/ModeTest.php",
-		"/C/Users/ujunio/Downloads/BaconQrCode-master/src/Writer.php",
-		"/D/_server/apache/sites/des.php.local/plat/storage/logs/.plat-autold-20220612.log",
-		"/D/_server/apache/Apache24/conf/extra/httpd-vhosts.conf",
-		"/D/_server/apache/Apache24/conf/httpd.conf",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/lib/Collei/Http/HttpServlet.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/dately/init.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/init.php",
-		"/C/Users/ujunio/Downloads/qr-code-master/composer.json",
-		"/C/Users/ujunio/Downloads/qr-code-master/.github/FUNDING.yml"
+		"/C/Users/ujunio/Downloads/php-qrcode-detector-decoder-master/lib/Binarizer.php"
 	],
 	"find":
 	{
@@ -727,6 +735,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"pluginIsUpdated",
+			"UDS_OUTDATED",
+			"UDS_UPDATED",
+			"UPD_STATE_OLD",
+			"UPD_STATE_NEW",
+			"unlink",
 			"100vw",
 			"LocationBase",
 			"\n\t\t\t\t\t",
@@ -743,6 +757,12 @@
 		"regex": false,
 		"replace_history":
 		[
+			"checkPluginState",
+			"PS_OUTDATED",
+			"PS_UPDATED",
+			"PS_OUTDATED",
+			"UDS_OUTDATED",
+			"UDS_UPDATED",
 			"PackageManager",
 			"\t",
 			"getApiInfoUri",
@@ -764,7 +784,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -773,15 +793,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4288,
+						"buffer_size": 4828,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1389,
-								1389
+								2634,
+								2634
 							]
 						],
 						"settings":
@@ -790,10 +810,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 912.0,
+						"translation.y": 1140.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -802,15 +822,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6508,
+						"buffer_size": 8844,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4903,
-								4903
+								1146,
+								1146
 							]
 						],
 						"settings":
@@ -819,10 +839,39 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 4246.0,
+						"translation.y": 5851.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/Packinst/Package/GitPackage.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1025,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								561,
+								571
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 228.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]

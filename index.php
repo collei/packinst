@@ -69,7 +69,7 @@ function showside(sel)
 			<p>
 				In order to INSTALL a package from GITHUB,<br>
 				please inform the repository in format <b>groupname/projectname</b><br>
-				in the field below and then hit <b>DO IT</b>.
+				in the field below and then hit <b>INSTALL</b>.
 			</p>
 			<p>
 				<input type="text" name="git_package" />
@@ -84,7 +84,7 @@ function showside(sel)
 			<p>
 				In order to UNINSTALL a package,<br>
 				please choose the repository you want to remove<br>
-				in the field below and then hit <b>DO IT</b>.
+				in the field below and then hit <b>UNINSTALL</b>.
 			</p>
 			<p>
 				<select name="git_package" onchange="showside(this);"><?php
@@ -135,24 +135,16 @@ if (!empty($git_package) && !empty($git_action))
 		if ($git_action == 'install')
 		{
 			if (install_package($git_package))
-			{
 				echo "- Package $git_package installed successfully. $nl";
-			}
 			else
-			{
 				echo "- Error occurred while installing $git_package. Please verify. $nl";
-			}
 		}
 		elseif ($git_action == 'uninst')
 		{
 			if (remove_package($git_package))
-			{
 				echo "- Package $git_package removed successfully. $nl";
-			}
 			else
-			{
 				echo "- Error occurred while installing $git_package. Please verify. $nl";
-			}
 		}
 	}
 	else
