@@ -82,7 +82,7 @@ function showside(sel)
 		<form action="./" method="post">
 			<input type="hidden" name="git_action" value="uninst">
 			<p>
-				In order to UNINSTALL a package from GITHUB,<br>
+				In order to UNINSTALL a package,<br>
 				please choose the repository you want to remove<br>
 				in the field below and then hit <b>DO IT</b>.
 			</p>
@@ -165,28 +165,27 @@ elseif (1 == 2)
 	echo '<hr>';
 	$edd = new GithubPackage('endroid/qr-code');
 	$edd->fetchRepositoryInfo();
-
 	echo '<fieldset>' . print_r($edd->repositoryInfo, true) . '</fieldset>';
 
 	echo '<hr>';
 	$col = new GithubPackage('collei/plat');
 	$col->fetchRepositoryInfo();
-
 	echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';
 }
 
-$verificam = ['collei/packinst', 'Bacon/BaconQrCode'];
+$verificam = ['collei/packinst', 'endroid/calendar', 'Bacon/BaconQrCode'];
 
 foreach ($verificam as $verific)
 {
-	$status = PackageManager::pluginIsUpdated($verific);
+	$status = PackageManager::checkPluginState($verific);
+	$message = PackageManager::PS_MESSAGE[$status] ?? '???';
 	//
-	if ($status == PackageManager::UDS_UPDATED)
-		echo "<span style='color:#080;'>Parabéns! O plugin $verific está atualizado.</span>\r\n"; 
-	elseif ($status == PackageManager::UDS_OUTDATED)
-		echo "<span style='color:#F00;'>Plugin $verific não está atualizado! Favor atualizar!!!</span>\r\n"; 
+	if ($status == PackageManager::PS_UPDATED)
+		echo "<span style='color:#080;'>Plugin $verific: $message.</span>\r\n"; 
+	elseif ($status == PackageManager::PS_OUTDATED)
+		echo "<span style='color:#F00;'>Plugin $verific: $message</span>\r\n"; 
 	else
-		echo "<span style='color:#F0F;'>ÊRRO AO VERIFICAR $verific - CORRAM PRAS MONTANHAS!</span>\r\n"; 
+		echo "<span style='color:#444;'>Plugin $verific: $message</span>\r\n"; 
 }
 
 

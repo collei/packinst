@@ -24,8 +24,29 @@ final class PackageManager
 	 */
 	private const DS = DIRECTORY_SEPARATOR;
 
-	public const UDS_UPDATED = 1;
-	public const UDS_OUTDATED = 2;
+	/**
+	 *	@const int PS_UPDATED
+	 *	@const int PS_OUTDATED
+	 *	@const int PS_NOT_INSTALLED
+	 *	@const int PS_UNREACHABLE_REPO
+	 *	@const int PS_UNDEFINED
+	 */
+	public const PS_UPDATED = 1;
+	public const PS_OUTDATED = 2;
+	public const PS_NOT_INSTALLED = 3;
+	public const PS_UNREACHABLE_REPO = 98;
+	public const PS_UNDEFINED = 99;
+
+	/**
+	 *	@const array PS_MESSAGE
+	 */
+	public const PS_MESSAGE = [
+		self::PS_UPDATED => 'Plugin is up-to-date',
+		self::PS_OUTDATED => 'Plugin is outdated',
+		self::PS_NOT_INSTALLED => 'Plugin not installed',
+		self::PS_UNREACHABLE_REPO => 'Remote repository could not be reached',
+		self::PS_UNDEFINED => 'Undefined plugin state',
+	];
 
 	/**
 	 *	@const string INIT_FILE
@@ -291,73 +312,65 @@ final class PackageManager
 	}
 
 	/**
-	 *	Verify the update state of the given plugin.
-	 *	Returns UDS_UPDATED (1) if plugin is up-to-date.
-	 *	Returns UDS_OUTDATED (2) if it is "old" (not up-to-date).
+	 *	Verify the update state of the given plugin and returns one of
+	 *	the following values:
+	 *		PS_UPDATED (1) - plugin is up-to-date
+	 *		PS_OUTDATED (2) - plugin is "old" (not up-to-date)
+	 *		PS_NOT_INSTALLED (3) - plugin not found
+	 *		PS_UNDEFINED (99) - package list was not initialized
+	 *		PS_UNREACHABLE_REPO (98) - the remote repo could not be reached
 	 *	Returns false otherwise.
 	 *
 	 *	@param	string	$pluginName
 	 *	@return	int|bool
 	 */
-	public static function pluginIsUpdated(string $pluginName)
+	public static function checkPluginState(string $pluginName)
 	{
 		if (empty(self::$packageList))
 		{
-			return false;
+			return self::PS_UNDEFINED;
 		}
 		//
-		if (array_key_exists($pluginName, self::$packageList))
+		if (!array_key_exists($pluginName, self::$packageList))
 		{
-			$pluginInfo = self::$packageList[$pluginName];
-			//
-			$git = new GithubPackage($pluginName);
-			$vendor = $git->getVendor();
-			$project = $git->getProject();
-			//
-			$vendorPath = self::$location . self::DS . $vendor;
-			$zipFile = $vendorPath . self::DS . $project . '.zip';
-			//
-			$existed = is_dir($vendorPath) && !is_link($vendorPath);
-			//
-			if (!$existed)
-			{
-				@mkdir($vendorPath);
-			}
-			//
-			$downloader = new GitPackageDownloader($git);
-			//
-			if ($downloader->downloadTo($zipFile))
-			{
-				// hash from new file
-				$sha1_new = sha1_file($zipFile);
-				$md5_new = md5_file($zipFile);
-				// hash from older one
-				$sha1_old = $pluginInfo['archive_info']['hash_sha1'];
-				$md5_old = $pluginInfo['archive_info']['hash_md5'];
-				//
-				$result = (($sha1_new == $sha1_old) && ($md5_new == $md5_old))
-					? self::UDS_UPDATED
-					: self::UDS_OUTDATED;
-				//
-				unlink($zipFile);
-				//
-				if (!$existed)
-				{
-					rmdir($vendorPath);
-				}
-				//
-				return $result;
-			}
-			else
-			{
-				if (!$existed)
-				{
-					rmdir($vendorPath);
-				}
-			}
+			return self::PS_NOT_INSTALLED;
 		}
 		//
-		return false;
+		$pluginInfo = self::$packageList[$pluginName];
+		//
+		$git = new GithubPackage($pluginName);
+		$vendor = $git->getVendor();
+		$project = $git->getProject();
+		//
+		$vendorPath = self::$location . self::DS . $vendor;
+		$zipFile = $vendorPath . self::DS . $project . '.zip';
+		//
+		if (!( is_dir($vendorPath) && !is_link($vendorPath) ))
+		{
+			return self::PS_NOT_INSTALLED;
+		}
+		//
+		$downloader = new GitPackageDownloader($git);
+		//
+		if ($downloader->downloadTo($zipFile))
+		{
+			// hash from new file
+			$sha1_new = sha1_file($zipFile);
+			$md5_new = md5_file($zipFile);
+			// hash from older one
+			$sha1_old = $pluginInfo['archive_info']['hash_sha1'];
+			$md5_old = $pluginInfo['archive_info']['hash_md5'];
+			//
+			$result = (($sha1_new == $sha1_old) && ($md5_new == $md5_old))
+				? self::PS_UPDATED
+				: self::PS_OUTDATED;
+			//
+			unlink($zipFile);
+			//
+			return $result;
+		}
+		//
+		return self::PS_UNREACHABLE_REPO;
 	}
 
 	/**
