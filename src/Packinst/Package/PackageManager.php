@@ -6,6 +6,8 @@ use Packinst\Utils\ArrayTokenScanner;
 use Packinst\Package\GitPackage;
 use Packinst\Package\Downloader\GitPackageDownloader;
 use Packinst\Package\Installer\GitPackageInstaller;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 
 /**
  *	@author	alarido.su@gmail.com
@@ -200,6 +202,88 @@ final class PackageManager
 	private static function callListener(...$arguments)
 	{
 		echo implode('', ($arguments ?? [])) . "\r\n";
+	}
+
+	/**
+	 *	Performs removal of the vendor path IF AND ONLY IF empty
+	 *
+	 *	@param	string	$vendorDir
+	 *	@return	bool
+	 */
+	private static function removeVendorIfEmpty(string $vendorDir)
+	{
+		$handle = opendir($vendorDir);
+		//
+		while (false !== ($entry = readdir($handle)))
+		{
+			if ($entry != '.' && $entry != '..')
+			{
+				closedir($handle);
+				//
+				return false;
+			}
+		}
+		//
+		closedir($handle);
+		//
+		rmdir($vendorDir);
+		//
+		return true;
+	}
+
+	/**
+	 *	Performs removal of the given path
+	 *
+	 *	@param	string	$pluginName
+	 *	@return	bool
+	 */
+	private static function removePluginFolder(string $path)
+	{
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator(
+				$path,
+				RecursiveDirectoryIterator::SKIP_DOTS
+			),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+		//
+		foreach ($files as $fileinfo)
+		{
+			$todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+			$todo($fileinfo->getRealPath());
+		}
+		//
+		rmdir($path);
+		//
+		self::removeVendorIfEmpty(dirname($path));
+	}
+
+	/**
+	 *	Performs removal steps for the given plugin
+	 *
+	 *	@param	string	$pluginName
+	 *	@return	bool
+	 */
+	public static function remove(string $pluginName)
+	{
+		if (empty(self::$packageList))
+		{
+			return false;
+		}
+		//
+		if (array_key_exists($pluginName, self::$packageList))
+		{
+			// obtain the path
+			$path = self::$packageList[$pluginName]['plugin_path'];
+			// removes all files
+			self::removePluginFolder($path);
+			// unset index from array info
+			unset(self::$packageList[$pluginName]);
+			//
+			return true;
+		}
+		//
+		return false;
 	}
 
 	/**

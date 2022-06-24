@@ -7,98 +7,152 @@ include 'src\Packinst\Package\PackageManager.php';
 include 'src\Packinst\Package\Downloader\GitPackageDownloader.php';
 include 'src\Packinst\Package\Installer\GitPackageInstaller.php';
 
-//use Packinst\Package\GitPackage;
 use Packinst\Package\GithubPackage;
-//use Packinst\Utils\ArrayTokenScanner;
 use Packinst\Package\PackageManager;
-//use Packinst\Package\Downloader\GitPackageDownloader;
-//use Packinst\Package\Installer\GitPackageInstaller;
+
+PackageManager::setLocation(realpath('vendor'));
+
+$infos = PackageManager::getInstalledPackages(true);
+
+$nl = "\r\n";
+
+$git_package = $_REQUEST['git_package'] ?? '';
+$git_action = $_REQUEST['git_action'] ?? '';
 
 
 ?>
 <!doctype html>
 <html>
 <head>
+	<style>
+#divided {
+	white-space: nowrap !important;
+	width: 97.5%;
+}
+#divided fieldset {
+	vertical-align: top !important;
+	display: inline-block !important;
+	height: 160px;
+	margin: 0;
+}
+#divided fieldset.s20 {
+	width: 22.5% !important;
+}
+#divided fieldset.s40 {
+	min-width: 45% !important;
+	max-width: 45% !important;
+}
+#logbelow {
+	max-height: 70vh !important;
+}
+.autosiz {
+	overflow-x: scroll !important;
+	overflow-y: scroll !important;
+}
+
+	</style>
+	<script>
+function showside(sel)
+{
+	let pd = sel.options[sel.selectedIndex].getAttribute('datapack');
+	let display = document.getElementById('showsider');
+	display.innerHTML = pd;
+}
+	</script>
 </head>
 <body>
 <hr>
-<form action="" method="post">
-<p>
-	In order to install a package from GITHUB,
-	please inform the repository in format <b>groupname/projectname</b>
-	in the field below and then hit <b>DO IT</b>.
-</p>
-<p>
-	<input type="text" name="git_package" />
-	&nbsp; &nbsp;
-	<input type="submit" name="git_package_installer" value="DO IT" />
-</p>
-</form>
+<div id="divided">
+	<fieldset class="s20">
+		<form action="./" method="post">
+			<input type="hidden" name="git_action" value="install">
+			<p>
+				In order to INSTALL a package from GITHUB,<br>
+				please inform the repository in format <b>groupname/projectname</b><br>
+				in the field below and then hit <b>DO IT</b>.
+			</p>
+			<p>
+				<input type="text" name="git_package" />
+				&nbsp; &nbsp;
+				<input type="submit" name="git_package_installer" value="INSTALL" />
+			</p>
+		</form>
+	</fieldset>
+	<fieldset class="s20">
+		<form action="./" method="post">
+			<input type="hidden" name="git_action" value="uninst">
+			<p>
+				In order to UNINSTALL a package from GITHUB,<br>
+				please choose the repository you want to remove<br>
+				in the field below and then hit <b>DO IT</b>.
+			</p>
+			<p>
+				<select name="git_package" onchange="showside(this);"><?php
+foreach ($infos as $n => $v)
+{
+	?>					<option value="<?=($n)?>" datapack="<?=(print_r($v,true))?>"><?=($n)?></option><?=("\r\n")?><?php
+}
+				?>				</select>
+				&nbsp; &nbsp;
+				<input type="submit" name="git_package_installer" value="UNINSTALL" />
+			</p>
+		</form>
+	</fieldset>
+	<fieldset class="s40 autosiz">
+		<pre id="showsider"><?=(print_r(reset($infos),true))?></pre>
+	</fieldset>
+</div>
 <hr>
-<pre>
+<div id="logbelow" class="autosiz">
+	<pre>
 <?php
 
-$nl = "\r\n";
+################################################################
+####	my own practice workspace, also serves as example	####
+################################################################
 
-$git_package = $_REQUEST['git_package'] ?? '';
-
-PackageManager::setLocation(realpath('vendor'));
-
-function install_git_into($packageName, $destination)
+function install_package($packageName)
 {
 	list($group, $project) = explode('/', $packageName);
-
-/*
-	$to_path = "./{$destination}/{$group}/{$project}";
-	$to_zip = $to_path . '/master.zip';
-
-	@mkdir($to_path, 0777, true);
-*/
+	//
 	$gp = new GithubPackage($group, $project);
 	$gp->fetchRepositoryInfo();
-
+	//
 	return PackageManager::install($gp);
-
-/*
-	$gpd = new GitPackageDownloader();
-	$gpd->setPackage($gp);
-
-	if ($gpd->downloadTo($to_zip))
-	{
-		$listener = function($event)
-		{
-			echo $event . "\r\n";
-		};
-
-		echo "- listener set \r\n";
-
-		$gpi = (new GitPackageInstaller())
-			->setLogListener($listener)
-			->setPackageDownloader($gpd)
-			->install();
-
-		//$gpd->writeLoaderFileTo($to_path . '/init.php');
-
-		return $gpi;
-	}
-
-	return false;
-*/
 }
 
-if (!empty($git_package))
+function remove_package($packageName)
+{
+	return PackageManager::remove($packageName);
+}
+
+if (!empty($git_package) && !empty($git_action))
 {
 	if (preg_match('/([\w_\-.]+)[\\/]([\w_\-.]+)/', $git_package))
 	{
 		echo '<fieldset>' . print_r($git_package, true) . '</fieldset>' . $nl;
-
-		if (install_git_into($git_package, 'vendor'))
+		//
+		if ($git_action == 'install')
 		{
-			echo "- Package $git_package installed successfully. $nl";
+			if (install_package($git_package))
+			{
+				echo "- Package $git_package installed successfully. $nl";
+			}
+			else
+			{
+				echo "- Error occurred while installing $git_package. Please verify. $nl";
+			}
 		}
-		else
+		elseif ($git_action == 'uninst')
 		{
-			echo "- Error occurred while installing $git_package. Please verify. $nl";
+			if (remove_package($git_package))
+			{
+				echo "- Package $git_package removed successfully. $nl";
+			}
+			else
+			{
+				echo "- Error occurred while installing $git_package. Please verify. $nl";
+			}
 		}
 	}
 	else
@@ -106,42 +160,23 @@ if (!empty($git_package))
 		echo "- Invalid package: <b>$git_package</b> $nl";
 	}
 }
-else
+elseif (1 == 2)
 {
+	echo '<hr>';
+	$edd = new GithubPackage('endroid/qr-code');
+	$edd->fetchRepositoryInfo();
 
-	$infos = PackageManager::getInstalledPackages(true);
+	echo '<fieldset>' . print_r($edd->repositoryInfo, true) . '</fieldset>';
 
-	?>
-	<fieldset>
-		<legend>Installed packages</legend>
-	<?php
-	foreach ($infos as $n => $v)
-	{
-		?>
-		<fieldset><legend><?=($n)?></legend><?=(print_r($v,true))?></fieldset>
-		<?php
-	}
-	?>
-	</fieldset>
-	<?php
+	echo '<hr>';
+	$col = new GithubPackage('collei/plat');
+	$col->fetchRepositoryInfo();
 
-	if (1 == 2)
-	{
-		echo '<hr>';
-		$edd = new GithubPackage('endroid/qr-code');
-		$edd->fetchRepositoryInfo();
-
-		echo '<fieldset>' . print_r($edd->repositoryInfo, true) . '</fieldset>';
-
-		echo '<hr>';
-		$col = new GithubPackage('collei/plat');
-		$col->fetchRepositoryInfo();
-
-		echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';
-	}
+	echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';
 }
 
 ?>
-</pre>
+	</pre>
+</div>
 </body>
 </html>
