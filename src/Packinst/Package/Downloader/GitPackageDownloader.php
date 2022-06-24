@@ -3,6 +3,7 @@
 namespace Packinst\Package\Downloader;
 
 use Packinst\Package\GitPackage;
+use Packinst\Package\GithubPackage;
 
 /**
  *	@author	alarido.su@gmail.com
@@ -45,6 +46,16 @@ class GitPackageDownloader
 	 *	@property string $downloadedLocation
 	 */
 	private $downloadedLocation = null;
+
+	/**
+	 *	@property array $archiveInfo
+	 */
+	private $archiveInfo = [];
+
+	/**
+	 *	@property array $dependencyInfo
+	 */
+	private $dependencyInfo = [];
 
 	/**
 	 *	Performs CURL download operation from $uri and, if successful,
@@ -97,6 +108,29 @@ class GitPackageDownloader
 		return true;
 	}
 
+	private function fetchArchiveInfo()
+	{
+		if (empty($this->downloadedLocation))
+		{
+			return false;
+		}
+		//
+		if (!file_exists($this->downloadedLocation))
+		{
+			return false;
+		}
+		//
+		$this->archiveInfo = [
+			'time_created' => date('Y-m-d H:i:s', filectime($this->downloadedLocation)),
+			'time_lastmod' => date('Y-m-d H:i:s', filemtime($this->downloadedLocation)),
+			'size' => filesize($this->downloadedLocation),
+			'hash_sha1' => sha1_file($this->downloadedLocation),
+			'hash_md5' => md5_file($this->downloadedLocation),
+		];
+		//
+		return true;
+	}
+
 	/**
 	 *	Initializes a new instance
 	 *
@@ -126,9 +160,9 @@ class GitPackageDownloader
 		{
 			$matches = [];
 			//
-			if (preg_match(self::PATTERN, $git_package, $matches))
+			if (preg_match(self::PATTERN, $packageDef, $matches))
 			{
-				$this->package = new GitPackage($matches[1], $matches[2]);
+				$this->package = new GithubPackage($matches[1], $matches[2]);
 			}
 		}
 		//
@@ -181,8 +215,22 @@ class GitPackageDownloader
 			. "\r\n\t'plugin' => '" . ($info->full_name) . "',"
 			. "\r\n\t'description' => '" . ($info->description ?? 'none') . "',"
 			. "\r\n\t'version' => '" . ($info->pushed_at ?? 'none') . "',"
-			. "\r\n\t'dependencies' => ["
-			. "\r\n\t],"
+			. "\r\n\t'dependencies' => [";
+		//
+		foreach ($this->dependencyInfo as $index => $value)
+		{
+			$initCode .= "\r\n\t\t'{$index}' => '{$value}',";
+		}
+		//
+		$initCode .= "\r\n\t],"
+			. "\r\n\t'archive_info' => [";
+		//
+		foreach ($this->archiveInfo as $index => $value)
+		{
+			$initCode .= "\r\n\t\t'{$index}' => '{$value}',";
+		}
+		//
+		$initCode .= "\r\n\t],"
 			. "\r\n\t'classes_folder' => '" . ($extraInfo['classes_folder'] ?? 'none') . "',"
 			. "\r\n]);\r\n\r\n";
 
@@ -203,7 +251,7 @@ class GitPackageDownloader
 	 *
 	 *	@param	string	$to
 	 *	@param	string	...$branches
-	 *	@return	self
+	 *	@return	bool
 	 */
 	public function downloadTo(string $to, string ...$branches)
 	{
@@ -226,6 +274,7 @@ class GitPackageDownloader
 			if ($this->fetchCurlDownload($uri, $to))
 			{
 				$this->downloadedLocation = $to;
+				$this->fetchArchiveInfo();
 				//
 				return true;
 			}

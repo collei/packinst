@@ -233,13 +233,19 @@ class GitPackageInstaller
 	 *	@param	string	$thezip
 	 *	@return	self
 	 */
-	private function unzipPackage(string $zipFile)
+	private function unzipPackage(string $zipFile, string $subFolder = null)
 	{
 		// assuming file.zip is in the same directory as the executing script.
 		$file = $zipFile;
 
 		// get the absolute path to $file
 		$path = pathinfo($file, PATHINFO_DIRNAME);
+
+		// and the folder to extract to, if any
+		if (!empty($subFolder))
+		{
+			$path .= self::DS . $subFolder;
+		}
 
 		$za = new ZipArchive;
 
@@ -336,6 +342,7 @@ class GitPackageInstaller
 		}
 
 		$zipFile = $this->downloader->getDownloadedLocation();
+		$projectName = $this->downloader->getPackage()->getProject();
 
 		// if no zip was downloaded yet
 		if (is_null($zipFile))
@@ -352,7 +359,7 @@ class GitPackageInstaller
 		}
 
 		// try to unpack the downloaded package
-		if (($dest = $this->unzipPackage($zipFile)) === false)
+		if (($dest = $this->unzipPackage($zipFile, $projectName)) === false)
 		{
 			$this->log('package may be empty or corrupted: ', $zipFile);
 			return false;
@@ -379,7 +386,7 @@ class GitPackageInstaller
 			}
 
 			$this->downloader->writeLoaderFileTo(
-				dirname($zipFile) . '/init.php',
+				$dest . self::DS . 'init.php',
 				[ 'classes_folder' => $this->detectedClassesFolder ]
 			);
 
@@ -388,6 +395,14 @@ class GitPackageInstaller
 		else
 		{
 			$this->log('Something gone wrong...');
+			//
+			return false;
+		}
+
+		// erases the zip file
+		if (file_exists($zipFile))
+		{
+			unlink($zipFile);
 		}
 
 		return true;

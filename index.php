@@ -175,6 +175,21 @@ elseif (1 == 2)
 	echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';
 }
 
+$verificam = ['collei/packinst', 'Bacon/BaconQrCode'];
+
+foreach ($verificam as $verific)
+{
+	$status = PackageManager::pluginIsUpdated($verific);
+	//
+	if ($status == PackageManager::UDS_UPDATED)
+		echo "<span style='color:#080;'>Parabéns! O plugin $verific está atualizado.</span>\r\n"; 
+	elseif ($status == PackageManager::UDS_OUTDATED)
+		echo "<span style='color:#F00;'>Plugin $verific não está atualizado! Favor atualizar!!!</span>\r\n"; 
+	else
+		echo "<span style='color:#F0F;'>ÊRRO AO VERIFICAR $verific - CORRAM PRAS MONTANHAS!</span>\r\n"; 
+}
+
+
 ?>
 	</pre>
 </div>

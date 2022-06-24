@@ -4,6 +4,7 @@ namespace Packinst\Package;
 
 use Packinst\Utils\ArrayTokenScanner;
 use Packinst\Package\GitPackage;
+use Packinst\Package\GithubPackage;
 use Packinst\Package\Downloader\GitPackageDownloader;
 use Packinst\Package\Installer\GitPackageInstaller;
 use RecursiveIteratorIterator;
@@ -22,6 +23,9 @@ final class PackageManager
 	 *	@const string DS
 	 */
 	private const DS = DIRECTORY_SEPARATOR;
+
+	public const UDS_UPDATED = 1;
+	public const UDS_OUTDATED = 2;
 
 	/**
 	 *	@const string INIT_FILE
@@ -287,6 +291,76 @@ final class PackageManager
 	}
 
 	/**
+	 *	Verify the update state of the given plugin.
+	 *	Returns UDS_UPDATED (1) if plugin is up-to-date.
+	 *	Returns UDS_OUTDATED (2) if it is "old" (not up-to-date).
+	 *	Returns false otherwise.
+	 *
+	 *	@param	string	$pluginName
+	 *	@return	int|bool
+	 */
+	public static function pluginIsUpdated(string $pluginName)
+	{
+		if (empty(self::$packageList))
+		{
+			return false;
+		}
+		//
+		if (array_key_exists($pluginName, self::$packageList))
+		{
+			$pluginInfo = self::$packageList[$pluginName];
+			//
+			$git = new GithubPackage($pluginName);
+			$vendor = $git->getVendor();
+			$project = $git->getProject();
+			//
+			$vendorPath = self::$location . self::DS . $vendor;
+			$zipFile = $vendorPath . self::DS . $project . '.zip';
+			//
+			$existed = is_dir($vendorPath) && !is_link($vendorPath);
+			//
+			if (!$existed)
+			{
+				@mkdir($vendorPath);
+			}
+			//
+			$downloader = new GitPackageDownloader($git);
+			//
+			if ($downloader->downloadTo($zipFile))
+			{
+				// hash from new file
+				$sha1_new = sha1_file($zipFile);
+				$md5_new = md5_file($zipFile);
+				// hash from older one
+				$sha1_old = $pluginInfo['archive_info']['hash_sha1'];
+				$md5_old = $pluginInfo['archive_info']['hash_md5'];
+				//
+				$result = (($sha1_new == $sha1_old) && ($md5_new == $md5_old))
+					? self::UDS_UPDATED
+					: self::UDS_OUTDATED;
+				//
+				unlink($zipFile);
+				//
+				if (!$existed)
+				{
+					rmdir($vendorPath);
+				}
+				//
+				return $result;
+			}
+			else
+			{
+				if (!$existed)
+				{
+					rmdir($vendorPath);
+				}
+			}
+		}
+		//
+		return false;
+	}
+
+	/**
 	 *	Performs installation steps for the given package
 	 *
 	 *	@param	Packinst\Package\GitPackage	$package
@@ -313,8 +387,8 @@ final class PackageManager
 		$group = $package->getVendor();
 		$project = $package->getProject();
 		//
-		$to_path = self::$location . self::DS . $group . self::DS . $project;
-		$to_zip = $to_path . '/master.zip';
+		$to_path = self::$location . self::DS . $group;
+		$to_zip = $to_path . self::DS . $project . '.zip';
 		//
 		@mkdir($to_path, 0777, true);
 		//
@@ -336,6 +410,7 @@ final class PackageManager
 		//
 		return false;
 	}
+
 	
 }
 
