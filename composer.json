@@ -20,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Collei\\Packinst\\": "src/"
+            "Collei\\Packinst\\": "src/Collei/Packinst"
         }
     }
 }
