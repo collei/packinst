@@ -19,6 +19,11 @@ class GithubPackage implements GitPackage
 	public const META_URI_API_INFO = 'https://api.github.com/repos/:vendor/:project';
 
 	/**
+	 *	@const string META_URI_API_BRANCH_INFO
+	 */
+	public const META_URI_API_BRANCH_INFO = 'https://api.github.com/repos/:vendor/:project/branches/:branch';
+
+	/**
 	 *	@const string META_URI_API
 	 */
 	public const META_URI_API_DOWNLOAD = 'https://api.github.com/repos/:vendor/:project/zipball/:branch';
@@ -192,6 +197,23 @@ class GithubPackage implements GitPackage
 			[':vendor', ':project'],
 			[$this->vendor, $this->project],
 			self::META_URI_API_INFO
+		);
+	}
+
+	/**
+	 *	Returns an API URI for the info on the related branch
+	 *
+	 *	@param	string	$branch = null
+	 *	@return	string
+	 */
+	public function getApiBranchInfoUri(string $branch = null)
+	{
+		$branch = $branch ?? 'master';
+		//
+		return str_replace(
+			[':vendor', ':project', ':branch'],
+			[$this->vendor, $this->project, $branch],
+			self::META_URI_API_BRANCH_INFO
 		);
 	}
 

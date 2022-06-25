@@ -54,6 +54,14 @@ interface GitPackage
 	public function getApiInfoUri();
 
 	/**
+	 *	Returns an API URI for the info on the related branch
+	 *
+	 *	@param	string	$branch = null
+	 *	@return	string
+	 */
+	public function getApiBranchInfoUri(string $branch = null);
+
+	/**
 	 *	Returns an API URI for the package
 	 *
 	 *	@param	string	$branch = null
