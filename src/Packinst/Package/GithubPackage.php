@@ -54,6 +54,11 @@ class GithubPackage implements GitPackage
 	private $repositoryInfo = null;
 
 	/**
+	 *	@var string $repositoryExists
+	 */
+	private $repositoryFound = false;
+
+	/**
 	 *	Initializes a new package info
 	 *
 	 *	@param	string	$vendorOrFullName
@@ -81,7 +86,8 @@ class GithubPackage implements GitPackage
 	/**
 	 *	Retrieves meta-info on the repository from Github 
 	 *
-	 *	@return	self
+	 *	@param	string	$name
+	 *	@return	mixed
 	 */
 	public function __get(string $name)
 	{
@@ -123,13 +129,26 @@ class GithubPackage implements GitPackage
 		//
 		if ($result && empty($errstr))
 		{
-			$jsonStr = json_decode($result);
+			$jsonObj = json_decode($result);
 			//
 			if (json_last_error() == JSON_ERROR_NONE)
 			{
-				$this->repositoryInfo = $jsonStr;
+				if ($this->repositoryFound = isset($jsonObj->full_name))
+				{
+					$this->repositoryInfo = $jsonObj;
+				}
 			}
 		}
+	}
+
+	/**
+	 *	Returns whether the repo was found or not
+	 *
+	 *	@return	bool
+	 */
+	public function repositoryExists()
+	{
+		return $this->repositoryFound;
 	}
 
 	/**

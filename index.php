@@ -155,14 +155,16 @@ if (!empty($git_package) && !empty($git_action))
 elseif (1 == 2)
 {
 	echo '<hr>';
-	$edd = new GithubPackage('endroid/qr-code');
-	$edd->fetchRepositoryInfo();
-	echo '<fieldset>' . print_r($edd->repositoryInfo, true) . '</fieldset>';
+	$col = new GithubPackage('collei/plato');
+	$col->fetchRepositoryInfo();
+	$found = $col->repositoryExists() ? 'existe' : 'não existe';
+	echo "<fieldset><legend>$found</legend>" . print_r($col->repositoryInfo, true) . '</fieldset>';
 
 	echo '<hr>';
-	$col = new GithubPackage('collei/plat');
-	$col->fetchRepositoryInfo();
-	echo '<fieldset>' . print_r($col->repositoryInfo, true) . '</fieldset>';
+	$edd = new GithubPackage('endroid/qr-code');
+	$edd->fetchRepositoryInfo();
+	$found = $edd->repositoryExists() ? 'existe' : 'não existe';
+	echo "<fieldset><legend>$found</legend>" . print_r($edd->repositoryInfo, true) . '</fieldset>';
 }
 
 $verificam = ['collei/packinst', 'endroid/calendar', 'Bacon/BaconQrCode'];

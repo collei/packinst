@@ -523,16 +523,7 @@
 			"file": "index.php",
 			"settings":
 			{
-				"buffer_size": 4828,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Packinst/Package/PackageManager.php",
-			"settings":
-			{
-				"buffer_size": 8844,
+				"buffer_size": 4794,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -590,8 +581,8 @@
 	],
 	"file_history":
 	[
-		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/Downloader/GitPackageDownloader.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/PackageManager.php",
+		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/Downloader/GitPackageDownloader.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/GithubPackage.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/Installer/GitPackageInstaller.php",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconStringUtils/src/BaconStringUtils/UniDecoder.php",
@@ -793,15 +784,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4828,
+						"buffer_size": 4794,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2634,
-								2634
+								3817,
+								3817
 							]
 						],
 						"settings":
@@ -810,7 +801,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1140.0,
+						"translation.y": 2166.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -818,35 +809,6 @@
 				},
 				{
 					"buffer": 1,
-					"file": "src/Packinst/Package/PackageManager.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8844,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1146,
-								1146
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 5851.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "src/Packinst/Package/GitPackage.php",
 					"semi_transient": false,
 					"settings":
@@ -871,7 +833,7 @@
 						"translation.y": 228.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

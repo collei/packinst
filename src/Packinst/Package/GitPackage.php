@@ -19,6 +19,13 @@ interface GitPackage
 	public function fetchRepositoryInfo();
 
 	/**
+	 *	Returns whether the repo was found or not
+	 *
+	 *	@return	bool
+	 */
+	public function repositoryExists();
+
+	/**
 	 *	Returns the full package name
 	 *
 	 *	@return	string
