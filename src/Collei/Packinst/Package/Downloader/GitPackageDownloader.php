@@ -1,9 +1,9 @@
 <?php
 
-namespace Packinst\Package\Downloader;
+namespace Collei\Packinst\Package\Downloader;
 
-use Packinst\Package\GitPackage;
-use Packinst\Package\GithubPackage;
+use Collei\Packinst\Package\GitPackage;
+use Collei\Packinst\Package\GithubPackage;
 
 /**
  *	@author	alarido.su@gmail.com
@@ -38,7 +38,7 @@ class GitPackageDownloader
 	];
 
 	/**
-	 *	@property \Packinst\Package\GitPackage $package
+	 *	@property \Collei\Packinst\Package\GitPackage $package
 	 */
 	private $package = null;
 
@@ -134,7 +134,7 @@ class GitPackageDownloader
 	/**
 	 *	Initializes a new instance
 	 *
-	 *	@param	\Packinst\Package\GitPackage	$package = null
+	 *	@param	\Collei\Packinst\Package\GitPackage	$package = null
 	 *	@return	self
 	 */
 	public function __construct(GitPackage $package = null)
@@ -147,7 +147,7 @@ class GitPackageDownloader
 	 *	Accepts either a GitPackage instance or a string in the
 	 *	group-name/project-name format.
 	 *
-	 *	@param	string|\Packinst\Package\GitPackage	$packageDef
+	 *	@param	string|\Collei\Packinst\Package\GitPackage	$packageDef
 	 *	@return	self
 	 */
 	public function setPackage($packageDef)
@@ -172,7 +172,7 @@ class GitPackageDownloader
 	/**
 	 *	Gets the package the downloader is associated with.
 	 *
-	 *	@return	\Packinst\Package\GitPackage|null
+	 *	@return	\Collei\Packinst\Package\GitPackage|null
 	 */
 	public function getPackage()
 	{
@@ -193,7 +193,7 @@ class GitPackageDownloader
 	 *	Generates a loader file with PHP code for the Collei Plat MVC
 	 *	Framework. It requires basic info on the package.
 	 *
-	 *	@param	string|\Packinst\Package\GitPackage	$packageDef
+	 *	@param	string|\Collei\Packinst\Package\GitPackage	$packageDef
 	 *	@return	self
 	 */
 	public function writeLoaderFileTo(string $destination, array $extraInfo = [])

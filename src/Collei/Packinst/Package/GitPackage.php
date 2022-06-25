@@ -1,6 +1,6 @@
 <?php
 
-namespace Packinst\Package;
+namespace Collei\Packinst\Package;
 
 /**
  *	@author	alarido.su@gmail.com

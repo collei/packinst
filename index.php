@@ -1,14 +1,14 @@
 <?php
 
-include 'src\Packinst\Utils\ArrayTokenScanner.php';
-include 'src\Packinst\Package\GitPackage.php';
-include 'src\Packinst\Package\GithubPackage.php';
-include 'src\Packinst\Package\PackageManager.php';
-include 'src\Packinst\Package\Downloader\GitPackageDownloader.php';
-include 'src\Packinst\Package\Installer\GitPackageInstaller.php';
+include 'src\Collei\Packinst\Utils\ArrayTokenScanner.php';
+include 'src\Collei\Packinst\Package\GitPackage.php';
+include 'src\Collei\Packinst\Package\GithubPackage.php';
+include 'src\Collei\Packinst\Package\PackageManager.php';
+include 'src\Collei\Packinst\Package\Downloader\GitPackageDownloader.php';
+include 'src\Collei\Packinst\Package\Installer\GitPackageInstaller.php';
 
-use Packinst\Package\GithubPackage;
-use Packinst\Package\PackageManager;
+use Collei\Packinst\Package\GithubPackage;
+use Collei\Packinst\Package\PackageManager;
 
 PackageManager::setLocation(realpath('vendor'));
 

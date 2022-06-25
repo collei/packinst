@@ -1,8 +1,8 @@
 <?php
 
-namespace Packinst\Package\Installer;
+namespace Collei\Packinst\Package\Installer;
 
-use Packinst\Package\Downloader\GitPackageDownloader;
+use Collei\Packinst\Package\Downloader\GitPackageDownloader;
 use ZipArchive;
 use DateTime;
 use Closure;
@@ -44,7 +44,7 @@ class GitPackageInstaller
 	private $detectedClassesFolder = '';
 
 	/**
-	 *	@var \Packinst\Package\Downloader\GitPackageDownloader $downloader
+	 *	@var \Collei\Packinst\Package\Downloader\GitPackageDownloader $downloader
 	 */
 	private $downloader = '';
 
@@ -267,7 +267,7 @@ class GitPackageInstaller
 	/**
 	 *	Initializes the package installer engine.
 	 *
-	 *	@param	\Packinst\Package\Downloader\GitPackageDownloader	$downloader = null
+	 *	@param	\Collei\Packinst\Package\Downloader\GitPackageDownloader	$downloader = null
 	 *	@return	self
 	 */
 	public function __construct(GitPackageDownloader $downloader = null)
@@ -281,7 +281,7 @@ class GitPackageInstaller
 	/**
 	 *	Sets the downloader related to the package.
 	 *
-	 *	@param	\Packinst\Package\Downloader\GitPackageDownloader	$downloader
+	 *	@param	\Collei\Packinst\Package\Downloader\GitPackageDownloader	$downloader
 	 *	@return	self
 	 */
 	public function setPackageDownloader(GitPackageDownloader $downloader)
@@ -294,7 +294,7 @@ class GitPackageInstaller
 	/**
 	 *	Gets the downloader related to the package.
 	 *
-	 *	@return	\Packinst\Package\Downloader\GitPackageDownloader|null
+	 *	@return	\Collei\Packinst\Package\Downloader\GitPackageDownloader|null
 	 */
 	public function getPackageDownloader()
 	{

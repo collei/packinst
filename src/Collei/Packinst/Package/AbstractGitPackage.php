@@ -1,8 +1,8 @@
 <?php
 
-namespace Packinst\Package;
+namespace Collei\Packinst\Package;
 
-use Packinst\Package\Downloader;
+use Collei\Packinst\Package\Downloader;
 
 /**
  *	@author	alarido.su@gmail.com

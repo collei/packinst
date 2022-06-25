@@ -1,6 +1,6 @@
 <?php
 
-namespace Packinst\Utils;
+namespace Collei\Packinst\Utils;
 
 /**
  *	@author user1441149 from https://stackoverflow.com/

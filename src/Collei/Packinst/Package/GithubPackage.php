@@ -1,8 +1,8 @@
 <?php
 
-namespace Packinst\Package;
+namespace Collei\Packinst\Package;
 
-use Packinst\Package\GitPackage;
+use Collei\Packinst\Package\GitPackage;
 
 /**
  *	@author	alarido.su@gmail.com

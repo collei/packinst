@@ -1,12 +1,12 @@
 <?php
 
-namespace Packinst\Package;
+namespace Collei\Packinst\Package;
 
-use Packinst\Utils\ArrayTokenScanner;
-use Packinst\Package\GitPackage;
-use Packinst\Package\GithubPackage;
-use Packinst\Package\Downloader\GitPackageDownloader;
-use Packinst\Package\Installer\GitPackageInstaller;
+use Collei\Packinst\Utils\ArrayTokenScanner;
+use Collei\Packinst\Package\GitPackage;
+use Collei\Packinst\Package\GithubPackage;
+use Collei\Packinst\Package\Downloader\GitPackageDownloader;
+use Collei\Packinst\Package\Installer\GitPackageInstaller;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
@@ -361,6 +361,14 @@ final class PackageManager
 	 */
 	public static function checkPluginState(string $pluginName)
 	{
+		/**
+		 *	@todo Fazer com que a verificação de plugin desatualizado
+		 *	não necessite de baixar pacote só pra isso. Tem uma api do
+		 *	branch que possui uma hash SHA e a DATA do último commit.
+		 *	Estas poderão ser colhidas e salvas ao instalar, para
+		 *	posterior verificação.
+		 */
+
 		if (empty(self::$packageList))
 		{
 			if (empty(self::$location))

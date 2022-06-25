@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"opt",
+				"optionsMirror"
+			],
+			[
+				"curl_e",
+				"curl_exec"
+			],
+			[
+				"curl_setopt",
+				"curl_setopt_array"
+			],
+			[
+				"repos",
+				"repositoryFound"
+			],
+			[
 				"Package",
 				"PackageManager"
 			],
@@ -118,10 +134,6 @@
 			[
 				"arch",
 				"archivePath"
-			],
-			[
-				"repos",
-				"repositoryInfo"
 			],
 			[
 				"META",
@@ -502,18 +514,6 @@
 			[
 				"letra",
 				"letra_atual"
-			],
-			[
-				"ler",
-				"letra_atual"
-			],
-			[
-				"diction",
-				"dictionary_divisor_letter"
-			],
-			[
-				"pre",
-				"previousPosition"
 			]
 		]
 	},
@@ -523,8 +523,34 @@
 			"file": "index.php",
 			"settings":
 			{
-				"buffer_size": 4794,
+				"buffer_size": 4965,
 				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/Packinst/Package/PackageManager.php",
+			"settings":
+			{
+				"buffer_size": 9785,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/Packinst/Package/GithubPackage.php",
+			"settings":
+			{
+				"buffer_size": 4850,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/D/_server/apache/sites/des.php.local/curler/src/Curler/Curler.php",
+			"settings":
+			{
+				"buffer_size": 1383,
 				"line_ending": "Windows"
 			}
 		},
@@ -532,7 +558,8 @@
 			"file": "src/Packinst/Package/GitPackage.php",
 			"settings":
 			{
-				"buffer_size": 1025,
+				"buffer_size": 1326,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		}
@@ -577,10 +604,14 @@
 		"/D/_server/apache/sites/des.php.local/packinst/src",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package",
+		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Utils",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor"
 	],
 	"file_history":
 	[
+		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Utils/Curler.php",
+		"/D/_server/apache/sites/des.php.local/packinst/packinst.json",
+		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/GitPackage.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/PackageManager.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/Downloader/GitPackageDownloader.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Packinst/Package/GithubPackage.php",
@@ -615,7 +646,6 @@
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/init.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/packinst.json",
 		"/D/_server/apache/sites/des.php.local/packinst/README.md",
-		"/D/_server/apache/sites/des.php.local/packinst/packinst.json",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/Bacon/BaconQrCode/composer.json",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/endroid/qr-code/composer.json",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode/composer.json",
@@ -706,9 +736,7 @@
 		"/C/Users/ujunio/AppData/Local/Temp/Temp1_Enum-master.zip/Enum-master/src/AbstractEnum.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/khanamiryan/php-qrcode-detector-decoder-master/init.php",
 		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/endroid/qr-code/src/Endroid/QrCode/Builder/Builder.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/endroid/qr-code/src/Endroid/QrCode/Writer/PngWriter.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/endroid/qr-code/init.php",
-		"/C/Users/ujunio/Downloads/php-qrcode-detector-decoder-master/lib/Binarizer.php"
+		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/endroid/qr-code/src/Endroid/QrCode/Writer/PngWriter.php"
 	],
 	"find":
 	{
@@ -726,6 +754,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"->options",
+			"$options",
 			"pluginIsUpdated",
 			"UDS_OUTDATED",
 			"UDS_UPDATED",
@@ -748,6 +778,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"->setOptions",
+			"$setOptions",
 			"checkPluginState",
 			"PS_OUTDATED",
 			"PS_UPDATED",
@@ -775,7 +807,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -784,15 +816,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4794,
+						"buffer_size": 4965,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3817,
-								3817
+								3874,
+								3874
 							]
 						],
 						"settings":
@@ -801,27 +833,113 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2166.0,
+						"translation.y": 1349.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/Packinst/Package/PackageManager.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9785,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7709,
+								7709
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4275.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/Packinst/Package/GithubPackage.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4850,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2383,
+								2383
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2004.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/D/_server/apache/sites/des.php.local/curler/src/Curler/Curler.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1383,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
+					"buffer": 4,
 					"file": "src/Packinst/Package/GitPackage.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1025,
+						"buffer_size": 1326,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								561,
-								571
+								802,
+								802
 							]
 						],
 						"settings":
@@ -830,10 +948,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 228.0,
+						"translation.y": 798.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
