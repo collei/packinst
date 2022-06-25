@@ -64,6 +64,35 @@ class GithubPackage implements GitPackage
 	private $repositoryFound = false;
 
 	/**
+	 *	Performs cURL operations on $url, returns $result and $err
+	 *
+	 *	@param	string	$url
+	 *	@param	string	&$result
+	 *	@param	string	&$err
+	 *	@return	bool
+	 */
+	private function curlIt(string $url, string &$result, string &$err)
+	{
+		$options = [
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_BINARYTRANSFER => 1,
+			CURLOPT_FOLLOWLOCATION => 1,
+			CURLOPT_SSL_VERIFYHOST => 0,
+			CURLOPT_SSL_VERIFYPEER => 0,
+			CURLOPT_USERAGENT => self::UA,
+			CURLOPT_URL => $url,
+		];
+		//
+		$curlHandle = curl_init();
+		curl_setopt_array($curlHandle, $options);
+		$result = curl_exec($curlHandle);
+		$err = curl_error($curlHandle);
+		curl_close($curlHandle);
+		//
+		return empty($errstr);
+	}
+
+	/**
 	 *	Initializes a new package info
 	 *
 	 *	@param	string	$vendorOrFullName
@@ -116,23 +145,11 @@ class GithubPackage implements GitPackage
 	 */
 	public function fetchRepositoryInfo()
 	{
-		$options = [
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_BINARYTRANSFER => 1,
-			CURLOPT_FOLLOWLOCATION => 1,
-			CURLOPT_SSL_VERIFYHOST => 0,
-			CURLOPT_SSL_VERIFYPEER => 0,
-			CURLOPT_USERAGENT => self::UA,
-			CURLOPT_URL => $this->getApiInfoUri(),
-		];
+		$uri = $this->getApiInfoUri();
+		$result = '';
+		$err = '';
 		//
-		$curlHandle = curl_init();
-		curl_setopt_array($curlHandle, $options);
-		$result = curl_exec($curlHandle);
-		$errstr = curl_error($curlHandle);
-		curl_close($curlHandle);
-		//
-		if ($result && empty($errstr))
+		if ($this->curlIt($uri, $result, $err)) if ($result)
 		{
 			$jsonObj = json_decode($result);
 			//
