@@ -34,6 +34,7 @@ final class PackageManager
 	public const PS_UPDATED = 1;
 	public const PS_OUTDATED = 2;
 	public const PS_NOT_INSTALLED = 3;
+	public const PS_NOT_VERIFIABLE = 97;
 	public const PS_UNREACHABLE_REPO = 98;
 	public const PS_UNDEFINED = 99;
 
@@ -44,6 +45,7 @@ final class PackageManager
 		self::PS_UPDATED => 'Plugin is up-to-date',
 		self::PS_OUTDATED => 'Plugin is outdated',
 		self::PS_NOT_INSTALLED => 'Plugin not installed',
+		self::PS_NOT_VERIFIABLE => 'Plugin could not be verified against repo',
 		self::PS_UNREACHABLE_REPO => 'Remote repository could not be reached',
 		self::PS_UNDEFINED => 'Undefined plugin state',
 	];
@@ -352,8 +354,9 @@ final class PackageManager
 	 *		PS_UPDATED			(1) - plugin is up-to-date
 	 *		PS_OUTDATED			(2) - plugin is "old" (not up-to-date)
 	 *		PS_NOT_INSTALLED	(3) - plugin not found
-	 *		PS_UNDEFINED		(99) - package list was not initialized
+	 *		PS_NOT_VERIFIABLE	(97) - package could not be verified
 	 *		PS_UNREACHABLE_REPO	(98) - the remote repo could not be reached
+	 *		PS_UNDEFINED		(99) - package list was not initialized
 	 *	Returns false otherwise.
 	 *
 	 *	@param	string	$pluginName
@@ -361,14 +364,6 @@ final class PackageManager
 	 */
 	public static function checkPluginState(string $pluginName)
 	{
-		/**
-		 *	@todo Fazer com que a verificação de plugin desatualizado
-		 *	não necessite de baixar pacote só pra isso. Tem uma api do
-		 *	branch que possui uma hash SHA e a DATA do último commit.
-		 *	Estas poderão ser colhidas e salvas ao instalar, para
-		 *	posterior verificação.
-		 */
-
 		if (empty(self::$packageList))
 		{
 			if (empty(self::$location))
@@ -385,33 +380,29 @@ final class PackageManager
 		}
 		//
 		$pluginInfo = self::$packageList[$pluginName];
+		$git = (new GithubPackage($pluginName))->fetchRepositoryInfo();
 		//
-		$git = new GithubPackage($pluginName);
-		$vendor = $git->getVendor();
-		$project = $git->getProject();
-		//
-		$vendorPath = self::$location . self::DS . $vendor;
-		$zipFile = $vendorPath . self::DS . $project . '.zip';
-		//
-		if (!( is_dir($vendorPath) && !is_link($vendorPath) ))
+		if ($dbi = $git->defaultBranchInfo)
 		{
-			return self::PS_NOT_INSTALLED;
-		}
-		//
-		$downloader = new GitPackageDownloader($git);
-		//
-		if ($downloader->downloadTo($zipFile))
-		{
-			$check = self::checkFileHashes($zipFile, [
-				'sha1' => $pluginInfo['archive_info']['hash_sha1'],
-				'md5' => $pluginInfo['archive_info']['hash_md5']
-			]);
+			$sha = $dbi->commit->sha ?? '';
+			$nodeid = $dbi->commit->node_id ?? '';
 			//
-			$result = $check ? self::PS_UPDATED : self::PS_OUTDATED;
+			$sha_here = $pluginInfo['branch_details']['commit_sha'] ?? '';
+			$nodeid_here = $pluginInfo['branch_details']['commit_node'] ?? '';
 			//
-			unlink($zipFile);
+			if (empty($sha) || empty($sha_here))
+			{
+				return self::PS_NOT_VERIFIABLE;
+			}
 			//
-			return $result;
+			if (($sha == $sha_here) && ($nodeid == $nodeid_here))
+			{
+				return self::PS_UPDATED;
+			}
+			else
+			{
+				return self::PS_OUTDATED;
+			}
 		}
 		//
 		return self::PS_UNREACHABLE_REPO;

@@ -19,6 +19,11 @@ class GithubPackage implements GitPackage
 	public const META_URI_API_INFO = 'https://api.github.com/repos/:vendor/:project';
 
 	/**
+	 *	@const string META_URI_API_BRANCHES_LIST
+	 */
+	public const META_URI_API_BRANCHES_LIST = 'https://api.github.com/repos/:vendor/:project/branches';
+
+	/**
 	 *	@const string META_URI_API_BRANCH_INFO
 	 */
 	public const META_URI_API_BRANCH_INFO = 'https://api.github.com/repos/:vendor/:project/branches/:branch';
@@ -54,9 +59,14 @@ class GithubPackage implements GitPackage
 	private $project;
 
 	/**
-	 *	@var string $repoInfo
+	 *	@var string $repositoryInfo
 	 */
 	private $repositoryInfo = null;
+
+	/**
+	 *	@var string $defaultBranchInfo
+	 */
+	private $defaultBranchInfo = null;
 
 	/**
 	 *	@var string $repositoryExists
@@ -90,6 +100,26 @@ class GithubPackage implements GitPackage
 		curl_close($curlHandle);
 		//
 		return empty($errstr);
+	}
+
+	private function fetchBranchInfo()
+	{
+		$uri = $this->getApiBranchInfoUri(
+			$this->repositoryInfo->default_branch ?? ''
+		);
+		//
+		$result = '';
+		$err = '';
+		//
+		if ($this->curlIt($uri, $result, $err)) if ($result)
+		{
+			$jsonObj = json_decode($result);
+			//
+			if (json_last_error() == JSON_ERROR_NONE)
+			{
+				$this->defaultBranchInfo = $jsonObj;
+			}
+		}
 	}
 
 	/**
@@ -135,11 +165,17 @@ class GithubPackage implements GitPackage
 			return $this->repositoryInfo;
 		}
 		//
+		if ($name == 'defaultBranchInfo')
+		{
+			return $this->defaultBranchInfo;
+		}
+		//
 		return $this->repositoryInfo->$name ?? null;
 	}
 
 	/**
-	 *	Retrieves meta-info on the repository from Github 
+	 *	Retrieves meta-info on the repository from Github
+	 *	to internal variables for later use.
 	 *
 	 *	@return	self
 	 */
@@ -158,9 +194,13 @@ class GithubPackage implements GitPackage
 				if ($this->repositoryFound = isset($jsonObj->full_name))
 				{
 					$this->repositoryInfo = $jsonObj;
+					//
+					$this->fetchBranchInfo();
 				}
 			}
 		}
+		//
+		return $this;
 	}
 
 	/**
@@ -225,12 +265,19 @@ class GithubPackage implements GitPackage
 	 */
 	public function getApiBranchInfoUri(string $branch = null)
 	{
-		$branch = $branch ?? 'master';
+		if (!empty($branch))
+		{
+			return str_replace(
+				[':vendor', ':project', ':branch'],
+				[$this->vendor, $this->project, $branch],
+				self::META_URI_API_BRANCH_INFO
+			);
+		}
 		//
 		return str_replace(
-			[':vendor', ':project', ':branch'],
-			[$this->vendor, $this->project, $branch],
-			self::META_URI_API_BRANCH_INFO
+			[':vendor', ':project'],
+			[$this->vendor, $this->project],
+			self::META_URI_API_BRANCHES_LIST
 		);
 	}
 

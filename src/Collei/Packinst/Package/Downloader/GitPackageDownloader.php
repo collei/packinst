@@ -121,8 +121,8 @@ class GitPackageDownloader
 		}
 		//
 		$this->archiveInfo = [
-			'time_created' => date('Y-m-d H:i:s', filectime($this->downloadedLocation)),
-			'time_lastmod' => date('Y-m-d H:i:s', filemtime($this->downloadedLocation)),
+			'time_created' => date('Y-m-d\TH:i:s\Z', filectime($this->downloadedLocation)),
+			'time_lastmod' => date('Y-m-d\TH:i:s\Z', filemtime($this->downloadedLocation)),
 			'size' => filesize($this->downloadedLocation),
 			'hash_sha1' => sha1_file($this->downloadedLocation),
 			'hash_md5' => md5_file($this->downloadedLocation),
@@ -214,28 +214,46 @@ class GitPackageDownloader
 			. "plat_plugin_register(["
 			. "\r\n\t'plugin' => '" . ($info->full_name) . "',"
 			. "\r\n\t'description' => '" . ($info->description ?? 'none') . "',"
-			. "\r\n\t'version' => '" . ($info->pushed_at ?? 'none') . "',"
-			. "\r\n\t'dependencies' => [";
+			. "\r\n\t'version' => '" . ($info->pushed_at ?? 'none') . "',";
 		//
-		foreach ($this->dependencyInfo as $index => $value)
+		if ($dbi = $this->package->defaultBranchInfo)
 		{
-			$initCode .= "\r\n\t\t'{$index}' => '{$value}',";
+			$initCode .= "\r\n\t'branch_details' => ["
+				. "\r\n\t\t'commit_sha' => '" . ($dbi->commit->sha ?? '') . "',"
+				. "\r\n\t\t'commit_node' => '" . ($dbi->commit->node_id ?? '') . "',"
+				. "\r\n\t\t'commit_author' => '" . ($dbi->commit->commit->author->name ?? '') . "',"
+				. "\r\n\t\t'commit_author_date' => '" . ($dbi->commit->commit->author->date ?? '') . "',"
+				. "\r\n\t\t'commit_committer' => '" . ($dbi->commit->commit->committer->name ?? '') . "',"
+				. "\r\n\t\t'commit_committer_date' => '" . ($dbi->commit->commit->committer->date ?? '') . "',"
+				. "\r\n\t],";
 		}
 		//
-		$initCode .= "\r\n\t],"
-			. "\r\n\t'archive_info' => [";
-		//
-		foreach ($this->archiveInfo as $index => $value)
+		if (!empty($this->dependencyInfo))
 		{
-			$initCode .= "\r\n\t\t'{$index}' => '{$value}',";
+			$initCode .= "\r\n\t'dependencies' => [";
+			foreach ($this->dependencyInfo as $index => $value)
+			{
+				$initCode .= "\r\n\t\t'{$index}' => '{$value}',";
+			}
+			$initCode .= "\r\n\t],";
 		}
 		//
-		$initCode .= "\r\n\t],"
+		if (!empty($this->archiveInfo))
+		{
+			$initCode .= "\r\n\t'archive_info' => [";
+			foreach ($this->archiveInfo as $index => $value)
+			{
+				$initCode .= "\r\n\t\t'{$index}' => '{$value}',";
+			}
+			$initCode .= "\r\n\t],";
+		}
+		//
+		$initCode .= ""
 			. "\r\n\t'classes_folder' => '" . ($extraInfo['classes_folder'] ?? 'none') . "',"
 			. "\r\n]);\r\n\r\n";
-
+		//
 		file_put_contents($destination, $initCode);
-
+		//
 		return $this;
 	}
 
