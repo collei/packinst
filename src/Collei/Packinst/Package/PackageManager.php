@@ -276,8 +276,7 @@ final class PackageManager
 	{
 		$files = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator(
-				$path,
-				RecursiveDirectoryIterator::SKIP_DOTS
+				$path, RecursiveDirectoryIterator::SKIP_DOTS
 			),
 			RecursiveIteratorIterator::CHILD_FIRST
 		);
@@ -322,30 +321,26 @@ final class PackageManager
 	}
 
 	/**
-	 *	Checks one or more hashes for the given file
+	 *	Performs update steps for the given plugin
 	 *
-	 *	@param	string	$path
-	 *	@param	array	$hashData
-	 *	@param	bool	$and = true
+	 *	@param	string	$pluginName
 	 *	@return	bool
 	 */
-	public static function checkFileHashes(
-		string $path, array $hashData, bool $and = true
-	)
+	public static function update(string $pluginName)
 	{
-		$algos = hash_algos();
-		$result = $and;
-		$count = 0;
-		//
-		foreach ($hashData as $algo => $hash) if (in_array($algo, $algos))
+		if (self::checkPluginState($pluginName) !== self::PS_OUTDATED)
 		{
-			$res = (hash_file($algo, $path) === $hash);
-			//
-			$result = ($and) ? ($result && $res) : ($result || $res);
-			++$count;
+			return false;
 		}
 		//
-		return ($count > 0) ? $result : false;
+		if (self::remove($pluginName))
+		{
+			$git = new GithubPackage($pluginName);
+			//
+			return self::install($git, true);
+		}
+		//
+		return false;
 	}
 
 	/**
@@ -417,12 +412,12 @@ final class PackageManager
 	 */
 	public static function install(GitPackage $package, bool $fetchInfo = false)
 	{
-		if (empty(self::$location))
+		if (empty($package))
 		{
 			return false;
 		}
 		//
-		if (empty($package))
+		if (self::checkPluginState($package->getName()) !== self::PS_NOT_INSTALLED)
 		{
 			return false;
 		}

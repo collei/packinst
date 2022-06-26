@@ -36,11 +36,12 @@ $git_action = $_REQUEST['git_action'] ?? '';
 	margin: 0;
 }
 #divided fieldset.s20 {
-	width: 22.5% !important;
+	min-width: 17.5% !important;
+	max-width: 17.5% !important;
 }
 #divided fieldset.s40 {
-	min-width: 45% !important;
-	max-width: 45% !important;
+	min-width: 40% !important;
+	max-width: 40% !important;
 }
 #logbelow {
 	max-height: 70vh !important;
@@ -67,9 +68,11 @@ function showside(sel)
 		<form action="./" method="post">
 			<input type="hidden" name="git_action" value="install">
 			<p>
-				In order to INSTALL a package from GITHUB,<br>
-				please inform the repository in format <b>groupname/projectname</b><br>
-				in the field below and then hit <b>INSTALL</b>.
+				In order to INSTALL a package<br>
+				from GITHUB, please inform the repository<br>
+				in format <b>groupname/projectname</b><br>
+				in the field below<br>
+				and then hit <b>INSTALL</b>.
 			</p>
 			<p>
 				<input type="text" name="git_package" />
@@ -83,8 +86,9 @@ function showside(sel)
 			<input type="hidden" name="git_action" value="uninst">
 			<p>
 				In order to UNINSTALL a package,<br>
-				please choose the repository you want to remove<br>
-				in the field below and then hit <b>UNINSTALL</b>.
+				please choose the repository<br>
+				you want to remove<br>
+				and then hit <b>UNINSTALL</b>.
 			</p>
 			<p>
 				<select name="git_package" onchange="showside(this);"><?php
@@ -95,6 +99,27 @@ foreach ($infos as $n => $v)
 				?>				</select>
 				&nbsp; &nbsp;
 				<input type="submit" name="git_package_installer" value="UNINSTALL" />
+			</p>
+		</form>
+	</fieldset>
+	<fieldset class="s20">
+		<form action="./" method="post">
+			<input type="hidden" name="git_action" value="update">
+			<p>
+				In order to UPDATE a package, please<br>
+				choose which you want to remove<br>
+				in the field below<br>
+				and then hit <b>UPDATE</b>.
+			</p>
+			<p>
+				<select name="git_package" onchange="showside(this);"><?php
+foreach ($infos as $n => $v)
+{
+	?>					<option value="<?=($n)?>" datapack="<?=(print_r($v,true))?>"><?=($n)?></option><?=("\r\n")?><?php
+}
+				?>				</select>
+				&nbsp; &nbsp;
+				<input type="submit" name="git_package_installer" value="UPDATE" />
 			</p>
 		</form>
 	</fieldset>
@@ -126,6 +151,11 @@ function remove_package($packageName)
 	return PackageManager::remove($packageName);
 }
 
+function update_package($packageName)
+{
+	return PackageManager::update($packageName);
+}
+
 if (!empty($git_package) && !empty($git_action))
 {
 	if (preg_match('/([\w_\-.]+)[\\/]([\w_\-.]+)/', $git_package))
@@ -144,7 +174,14 @@ if (!empty($git_package) && !empty($git_action))
 			if (remove_package($git_package))
 				echo "- Package $git_package removed successfully. $nl";
 			else
-				echo "- Error occurred while installing $git_package. Please verify. $nl";
+				echo "- Error occurred while removing $git_package. Please verify. $nl";
+		}
+		elseif ($git_action == 'update')
+		{
+			if (update_package($git_package))
+				echo "- Package $git_package updated successfully. $nl";
+			else
+				echo "- $git_package is already updated or maybe not installed. Please verify. $nl";
 		}
 	}
 	else
