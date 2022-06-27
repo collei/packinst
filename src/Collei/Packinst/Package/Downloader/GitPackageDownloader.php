@@ -228,14 +228,17 @@ class GitPackageDownloader
 				. "\r\n\t],";
 		}
 		//
-		if (!empty($this->dependencyInfo))
+		if ($extraInfo['dependencies'] ?? false)
 		{
-			$initCode .= "\r\n\t'dependencies' => [";
-			foreach ($this->dependencyInfo as $index => $value)
+			if (!empty($extraInfo['dependencies']))
 			{
-				$initCode .= "\r\n\t\t'{$index}' => '{$value}',";
+				$initCode .= "\r\n\t'dependencies' => [";
+				foreach ($extraInfo['dependencies'] as $index => $value)
+				{
+					$initCode .= "\r\n\t\t'{$index}' => '{$value}',";
+				}
+				$initCode .= "\r\n\t],";
 			}
-			$initCode .= "\r\n\t],";
 		}
 		//
 		if (!empty($this->archiveInfo))

@@ -44,6 +44,11 @@ class GitPackageInstaller
 	private $detectedClassesFolder = '';
 
 	/**
+	 *	@var stdClass $composerInfo
+	 */
+	private $composerInfo = '';
+
+	/**
 	 *	@var \Collei\Packinst\Package\Downloader\GitPackageDownloader $downloader
 	 */
 	private $downloader = '';
@@ -264,6 +269,33 @@ class GitPackageInstaller
 		return $path;
 	}
 
+	private function scanComposerJson(string $pluginPath)
+	{
+		$items = array_diff(scandir($pluginPath), ['..', '.']);
+		$target = false;
+		//
+		foreach ($items as $item)
+		{
+			if ($item == 'composer.json')
+			{
+				$target = $pluginPath . self::DS . $item;
+				break;
+			}
+		}
+		//
+		if ($target) if ($json = file_get_contents($target))
+		{
+			if ($obj = @json_decode($json))
+			{
+				$this->composerInfo = $obj;
+				//
+				return true;
+			}
+		}
+		//
+		return false;
+	}
+
 	/**
 	 *	Initializes the package installer engine.
 	 *
@@ -382,12 +414,35 @@ class GitPackageInstaller
 					$qtd = $this->organizePhpClasses($basePath);
 
 					$this->log('Detected class files: ', $qtd);
+
+					break;
 				}
 			}
 
+			$dependencies = [];
+
+			// try to find 'composer.json' for some package info
+			if ($this->scanComposerJson($path2))
+			{
+				if ($this->composerInfo->require ?? false)
+				{
+					foreach ($this->composerInfo->require as $name => $value)
+					{
+						if (strpos($name, '/') !== false)
+						{
+							$dependencies[$name] = $value;
+						}
+					}
+				}
+			}
+
+			// generate the init.php file
 			$this->downloader->writeLoaderFileTo(
 				$dest . self::DS . 'init.php',
-				[ 'classes_folder' => $this->detectedClassesFolder ]
+				[
+					'classes_folder' => $this->detectedClassesFolder,
+					'dependencies' => $dependencies
+				]
 			);
 
 			$this->log('Class files organized successfully.');

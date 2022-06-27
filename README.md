@@ -14,11 +14,11 @@ Developed currently under Apache Web Server 2.4, PHP 7.4, Windows 10 Pro.
 
 ## Current Features
 * Install a package from public GITHUB repo, given its "group/project" string.
-* Remove an installed package.
+* Remove an installed package
 * Check if a given plugin is up-to-date
+* Update and outdated package
 
 ### For the Long Run
-* Ability to update installed packages.
 * Ability to automatically install/update dependencies for a given package.
 * Support for other popular VCS (public repos only) 
 

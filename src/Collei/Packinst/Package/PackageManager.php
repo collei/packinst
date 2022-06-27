@@ -435,8 +435,7 @@ final class PackageManager
 		//
 		@mkdir($to_path, 0777, true);
 		//
-		$downloader = new GitPackageDownloader();
-		$downloader->setPackage($package);
+		$downloader = new GitPackageDownloader($package);
 		//
 		if ($downloader->downloadTo($to_zip))
 		{
