@@ -523,34 +523,7 @@
 			"file": "index.php",
 			"settings":
 			{
-				"buffer_size": 6012,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Collei/Packinst/Package/PackageManager.php",
-			"settings":
-			{
-				"buffer_size": 9421,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Collei/Packinst/Package/Installer/GitPackageInstaller.php",
-			"settings":
-			{
-				"buffer_size": 9818,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Collei/Packinst/Package/Downloader/GitPackageDownloader.php",
-			"settings":
-			{
-				"buffer_size": 7354,
+				"buffer_size": 6250,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -609,10 +582,17 @@
 		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/Downloader",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/Installer",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Utils",
-		"/D/_server/apache/sites/des.php.local/packinst/vendor"
+		"/D/_server/apache/sites/des.php.local/packinst/vendor",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon",
+		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode"
 	],
 	"file_history":
 	[
+		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/Downloader/GitPackageDownloader.php",
+		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/Installer/GitPackageInstaller.php",
+		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/PackageManager.php",
+		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/dately/init.php",
+		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/packinst/init.php",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode/composer.json",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/Bacon/BaconQrCode/init.php",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/endroid/qr-code/init.php",
@@ -621,11 +601,8 @@
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/collei/packinst/init.php",
 		"/D/_server/apache/sites/des.php.local/packinst/composer.json",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/GithubPackage.php",
-		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/Downloader/GitPackageDownloader.php",
 		"/D/_server/apache/sites/des.php.local/packinst/vendor/endroid/calendar/init.php",
-		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/Installer/GitPackageInstaller.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Utils/ArrayTokenScanner.php",
-		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/PackageManager.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/GitPackage.php",
 		"/D/_server/apache/sites/des.php.local/packinst/src/Collei/Packinst/Package/AbstractGitPackage.php",
 		"/D/_server/apache/sites/des.php.local/curler/src/Curler/Curler.php",
@@ -738,9 +715,7 @@
 		"/D/_server/apache/sites/des.php.local/plat/sites/contacta/resources/views/index.vis.php",
 		"/D/_server/apache/sites/des.php.local/plat/resources/views/user/logon.vis.php",
 		"/D/_server/apache/sites/des.php.local/plat/app/database.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/src/Collei/Auth/Models/AuthUser.php",
-		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/sonata-project/GoogleAuthenticator/init.php",
-		"/C/Users/ujunio/Downloads/GoogleAuthenticator-2.x/composer.json"
+		"/D/_server/apache/sites/des.php.local/plat/vendor/plugins/collei/collei/src/Collei/Auth/Models/AuthUser.php"
 	],
 	"find":
 	{
@@ -814,7 +789,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -823,15 +798,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 6012,
+						"buffer_size": 6250,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5546,
-								5546
+								0,
+								0
 							]
 						],
 						"settings":
@@ -840,101 +815,14 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3534.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src/Collei/Packinst/Package/PackageManager.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9421,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3275,
-								3275
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 7509.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/Collei/Packinst/Package/Installer/GitPackageInstaller.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9818,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9212,
-								9212
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 7670.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/Collei/Packinst/Package/Downloader/GitPackageDownloader.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7354,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								5700,
-								5700
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4042.0,
+						"translation.y": 2679.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
+					"buffer": 1,
 					"file": "src/Collei/Packinst/Package/GithubPackage.php",
 					"semi_transient": false,
 					"settings":
@@ -959,7 +847,7 @@
 						"translation.y": 2598.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				}
 			]

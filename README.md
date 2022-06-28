@@ -24,7 +24,10 @@ Developed currently under Apache Web Server 2.4, PHP 7.4, Windows 10 Pro.
 
 ## Known Limitations
 * Can work with Github only.
-* Can work with public repositories only. 
+* Can work with public repositories only.
+* Does not care of package dependencies, some of which may be not compatible
+with Collei Plat nor with Packinst itself, such as Composer- or Symfony-enabled
+items. 
 
 ## License
 MIT License
