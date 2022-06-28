@@ -19,21 +19,6 @@ $nl = "\r\n";
 $git_package = $_REQUEST['git_package'] ?? '';
 $git_action = $_REQUEST['git_action'] ?? '';
 
-$colegio = $_REQUEST['colegio'] ?? '';
-$serie = $_REQUEST['serie'] ?? '';
-$grau = $_REQUEST['grau'] ?? '';
-
-if (!empty($colegio))
-{
-	include_once 'colegio.php';
-}
-
-if (function_exists('colegiar'))
-{
-	colegiar($colegio, $serie, $grau);
-}
-
-
 ?>
 <!doctype html>
 <html>
