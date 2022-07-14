@@ -111,12 +111,10 @@ class GithubPackage implements GitPackage
 		$result = '';
 		$err = '';
 		//
-		if ($this->curlIt($uri, $result, $err)) if ($result)
-		{
+		if ($this->curlIt($uri, $result, $err)) if ($result) {
 			$jsonObj = json_decode($result);
 			//
-			if (json_last_error() == JSON_ERROR_NONE)
-			{
+			if (json_last_error() == JSON_ERROR_NONE) {
 				$this->defaultBranchInfo = $jsonObj;
 			}
 		}
@@ -131,16 +129,17 @@ class GithubPackage implements GitPackage
 	 */
 	public function __construct(string $vendorOrFullName, string $project = null)
 	{
-		if (strpos($vendorOrFullName, '/') !== false)
-		{
+		$vendorOrFullName = strtolower($vendorOrFullName);
+		//
+		if (strpos($vendorOrFullName, '/') !== false) {
 			$parts = explode('/', $vendorOrFullName);
 			//
 			$this->vendor = $parts[0];
 			$this->project = $parts[1];
 			$this->fullName = $vendorOrFullName;
-		}
-		else
-		{
+		} else {
+			$project = strtolower($project);
+			//
 			$this->vendor = $vendorOrFullName;
 			$this->project = $project ?? $vendorOrFullName;
 			$this->fullName = $this->vendor . '/' . $this->project;
@@ -191,10 +190,13 @@ class GithubPackage implements GitPackage
 			//
 			if (json_last_error() == JSON_ERROR_NONE)
 			{
-				if ($this->repositoryFound = isset($jsonObj->full_name))
+				$this->repositoryFound = (
+					strtolower($jsonObj->full_name ?? '') === $this->fullName
+				);
+				//
+				if ($this->repositoryFound)
 				{
 					$this->repositoryInfo = $jsonObj;
-					//
 					$this->fetchBranchInfo();
 				}
 			}

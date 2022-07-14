@@ -1,0 +1,73 @@
+walkthrough to find github-hosted package dependencies
+
+1. go https://api.github.com/repos/collei/packinst
+2. see:
+{ (...)
+  "default_branch": "{THE_BRANCH}"
+3. go https://api.github.com/repos/collei/packinst/branches/{THE_BRANCH}
+4. see:
+{ (...)
+  "commit": {
+    "commit": {
+      "tree": {
+        "sha": "9952bea85212e6816936765b85481ce8d295c4c0",
+        "url": "{THE_LAST_COMMIT_TREE_URL}"
+      },
+5. go {THE_LAST_COMMIT_TREE_URL}
+6. lookup "composer.json" url below:
+{
+  "sha": "9952bea85212e6816936765b85481ce8d295c4c0",
+  "url": "https://api.github.com/repos/collei/packinst/git/trees/9952bea85212e6816936765b85481ce8d295c4c0",
+  "tree": [
+	(...)
+    {
+      "path": "composer.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7d12dd9be5450034557f10c691db1312dd229354",
+      "size": 625,
+      "url": "{COMPOSER_JSON_URL}"
+    }
+7. go {COMPOSER_JSON_URL}
+8. see:
+{
+  "sha": "7d12dd9be5450034557f10c691db1312dd229354",
+  "node_id": "B_kwDOHh2iZdoAKDdkMTJkZDliZTU0NTAwMzQ1NTdmMTBjNjkxZGIxMzEyZGQyMjkzNTQ",
+  "size": 625,
+  "url": "https://api.github.com/repos/collei/packinst/git/blobs/7d12dd9be5450034557f10c691db1312dd229354",
+  "content": "ewoJIm5hbWUiOiAiY29sbGVpL3BhY2tpbnN0IiwKCSJkZXNjcmlwdGlvbiI6\nICJwYWNrYWdlIG1hbmFnZXIgZm9yIHRoZSBDb2xsZWkgUGxhdCBNVkMgRnJh\nbWV3b3JrIiwKICAgICJrZXl3b3JkcyI6IFsiY29sbGVpIiwgInBhY2thZ2Ui\nLCAibWFuYWdlciIsICJwbGF0IiwgInBocCJdLAogICAgImhvbWVwYWdlIjog\nImh0dHBzOi8vZ2l0aHViLmNvbS9jb2xsZWkvcGFja2luc3QiLAogICAgInR5\ncGUiOiAibGlicmFyeSIsCiAgICAibGljZW5zZSI6ICJNSVQiLAogICAgImF1\ndGhvcnMiOiBbCiAgICAgICAgewogICAgICAgICAgICAibmFtZSI6ICJDb2xs\nZWkgSW5jLiIsCiAgICAgICAgICAgICJlbWFpbCI6ICJjb2xsZWlAY29sbGVp\nLmNvbS5iciIKICAgICAgICB9CiAgICBdLAogICAgInJlcXVpcmUiOiB7CiAg\nICAgICAgInBocCI6ICJeNy40fHxeOC4wIiwKCQkiY29sbGVpL3BsYXQiOiAi\nKiIKICAgIH0sCiAgICAiY29uZmlnIjogewogICAgICAgICJzb3J0LXBhY2th\nZ2VzIjogdHJ1ZQogICAgfSwKICAgICJhdXRvbG9hZCI6IHsKICAgICAgICAi\ncHNyLTQiOiB7CiAgICAgICAgICAgICJDb2xsZWlcXFBhY2tpbnN0XFwiOiAi\nc3JjL0NvbGxlaS9QYWNraW5zdCIKICAgICAgICB9CiAgICB9Cn0KCg==\n",
+  "encoding": "base64"
+}
+9. remove all "\n" from "content"
+10. decode "content" from "base64"
+11. see the content:
+{
+	"name": "collei/packinst",
+	"description": "package manager for the Collei Plat MVC Framework",
+    "keywords": ["collei", "package", "manager", "plat", "php"],
+    "homepage": "https://github.com/collei/packinst",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Collei Inc.",
+            "email": "collei@collei.com.br"
+        }
+    ],
+    "require": {
+        "php": "^7.4||^8.0",
+		"collei/plat": "*"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Collei\\Packinst\\": "src/Collei/Packinst"
+        }
+    }
+}
+12. Check for "require" references
+
+
+

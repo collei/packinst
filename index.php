@@ -142,7 +142,12 @@ function install_package($packageName)
 	$gp = new GithubPackage($group, $project);
 	$gp->fetchRepositoryInfo();
 	//
-	return PackageManager::install($gp);
+	if ($gp->repositoryExists()) {
+		return PackageManager::install($gp);
+	}
+	//
+	echo "- Package $packageName not found on Github, please verify\r\n";
+	return false;
 }
 
 function remove_package($packageName)
