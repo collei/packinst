@@ -1,5 +1,6 @@
 # **IMPORTANT**
 **Abandoned package**
+
 Collei Framework has adopted Composer as dependency management solution, so this package is no longer needed. 
 
 # Collei Packinst
