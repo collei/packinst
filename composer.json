@@ -3,6 +3,7 @@
 	"description": "package manager for the Collei Plat MVC Framework",
     "keywords": ["collei", "package", "manager", "plat", "php"],
     "homepage": "https://github.com/collei/packinst",
+	"abandoned": true,
     "type": "library",
     "license": "MIT",
     "authors": [
